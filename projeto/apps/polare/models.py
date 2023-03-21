@@ -1,3 +1,6 @@
+from datetime import datetime
+
+import arrow
 from django.db import models
 
 
@@ -46,6 +49,77 @@ class PlanoIndividual(models.Model):
         managed = False
         db_table = 'polare\".\"plano_individual'
 
+    def modelo_trabalho_numero(self):
+        match self.modelo_trabalho:
+            case 'PRESENCIAL': return 1
+            case 'HIBRIDO': return 2
+            case 'REMOTO': return 3
+            case _: return 0
+
+    @property
+    def carga_horaria_semanal(self):
+        formato = '%H:%M'
+        horas_remoto = 0
+        for horario in self.horarios.filter(ativo=True).all():
+            dias = (horario.domingo, horario.segunda, horario.terca, horario.quarta, horario.quinta,
+                    horario.sexta, horario.sabado)
+
+            for dia in dias:
+                if dia and horario.tipo_horario_trabalho.lower() == 'remoto':
+                    fim = datetime.strptime(horario.horario_fim, formato)
+                    inicio = datetime.strptime(horario.horario_inicio, formato)
+                    delta = (fim - inicio)
+                    horas_remoto += delta.days * 24 + delta.seconds / 3600
+
+        return horas_remoto
+
+    @property
+    def carga_horaria_total(self):
+        formato = '%Y-%m-%d'
+        inicio = datetime.strptime('2022-12-12', formato)
+        fim = datetime.strptime('2023-05-12', formato)
+
+        num_semanas = sum(1 for _ in arrow.Arrow.span_range('week', inicio, fim)) - 1
+        return num_semanas * self.carga_horaria_semanal
+
+
+class HorarioTrabalho(models.Model):
+
+    id = models.BigIntegerField(primary_key=True)
+    ativo = models.BooleanField()
+    versao = models.BigIntegerField()
+    horario_fim = models.CharField(max_length=255)
+    horario_inicio = models.CharField(max_length=255)
+
+    domingo = models.BooleanField(blank=True, null=True)
+    segunda = models.BooleanField(blank=True, null=True)
+    terca = models.BooleanField(blank=True, null=True)
+    quarta = models.BooleanField(blank=True, null=True)
+    quinta = models.BooleanField(blank=True, null=True)
+    sexta = models.BooleanField(blank=True, null=True)
+    sabado = models.BooleanField(blank=True, null=True)
+
+    tipo_horario_trabalho = models.CharField(max_length=255, blank=True, null=True)
+
+    plano_individual = models.ForeignKey(PlanoIndividual, models.DO_NOTHING, related_name='horarios')
+
+    class Meta:
+        managed = False
+        db_table = 'polare\".\"horario_trabalho'
+
+
+class Atividade(models.Model):
+
+    id = models.BigIntegerField(primary_key=True)
+    ativo = models.BooleanField()
+    versao = models.BigIntegerField()
+    complexidade_atividade = models.CharField(max_length=255)
+    titulo = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'polare\".\"atividade'
+
 
 class Entrega(models.Model):
 
@@ -58,15 +132,30 @@ class Entrega(models.Model):
     data_fim = models.DateTimeField()
     tipo_entrega = models.CharField(max_length=50)
     status = models.CharField(max_length=50)
-    plano_individual = models.ForeignKey(
-        PlanoIndividual,
-        related_name='entregas',
-        on_delete=models.DO_NOTHING
-    )
+    atividade = models.ForeignKey(Atividade, related_name='entregas', on_delete=models.DO_NOTHING,
+                                  blank=True, null=True)
+    plano_individual = models.ForeignKey(PlanoIndividual, related_name='entregas',
+                                         on_delete=models.DO_NOTHING)
 
     class Meta:
         managed = False
         db_table = 'polare\".\"entrega'
+
+    @property
+    def tempo_presencial_estimado(self):
+        return 0
+
+    @property
+    def tempo_presencial_programado(self):
+        return 0
+
+    @property
+    def tempo_teletrabalho_estimado(self):
+        return self.plano_individual.carga_horaria_semanal
+
+    @property
+    def tempo_teletrabalho_programado(self):
+        return self.plano_individual.carga_horaria_semanal
 
 
 class Subtarefa(models.Model):

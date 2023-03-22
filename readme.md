@@ -12,3 +12,11 @@ As seguintes váriaveis devem ser definidas no arquivo projeto/settings/.env (ex
     PGD_PLANO_TRABALHO_URL=http://localhost:5057/plano_trabalho
     USERNAME=username@domain.com
     PASSWORD=admin
+
+
+Problemas Identificados
+=======================
+
+Os códigos de unidade do IFPA podem ultrapassar o limite de tamanho do tipo integer. Foi alterado o tipo de
+dados da coluna cod_unidade_exercicio da tabela public.plano_trabalho de integer para bigint no banco de dados
+api_pgd.

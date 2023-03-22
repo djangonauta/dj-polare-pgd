@@ -30,13 +30,14 @@ class ClientePGD:
         async with aiohttp.ClientSession() as session:
             headers = await self.obter_headers(session)
 
-            planos = models.PlanoIndividual.objects.prefetch_related('entregas__subtarefas', 'horarios').all()
+            planos = models.PlanoIndividual.objects.all()
+            planos = planos.prefetch_related('entregas__subtarefas', 'entregas__atividade', 'horarios').all()
+
             async for plano in planos:
                 url = f'{settings.PGD_PLANO_TRABALHO_URL}/{plano.id}'
                 json = await self.serializar(plano)
                 async with session.put(url, json=json, headers=headers) as response:
                     if response.status == 200:
-                        logger.info(f'Registro {json["cod_plano"]} cadastrado com sucesso.')
                         self.total_registros += 1
                         continue
 
@@ -47,8 +48,6 @@ class ClientePGD:
 
                         erro = f'Formato inválido dos dados enviados.\n{stream.getvalue()}'
                         raise exceptions.EntidadeNaoProcessada(erro)
-
-                    logger.error(f'Erro ao cadastrar registro {json["cod_plano"]}\n{conteudo}', exc_info=True)
 
         logger.info('Processamento finalizado.')
 
@@ -80,6 +79,7 @@ class Command(BaseCommand):
         try:
             cliente = ClientePGD()
             asyncio.get_event_loop().run_until_complete(cliente.main())
+            logger.info(f'Total de registros processados: {cliente.total_registros}')
 
         except KeyboardInterrupt:
             logger.info('\nOperação cancelada pelo usuário.')

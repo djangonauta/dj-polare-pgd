@@ -49,6 +49,7 @@ class PlanoIndividual(models.Model):
         managed = False
         db_table = 'polare\".\"plano_individual'
 
+    @property
     def modelo_trabalho_numero(self):
         match self.modelo_trabalho:
             case 'PRESENCIAL': return 1
@@ -57,30 +58,13 @@ class PlanoIndividual(models.Model):
             case _: return 0
 
     @property
-    def carga_horaria_semanal(self):
-        formato = '%H:%M'
-        horas_remoto = 0
-        for horario in self.horarios.filter(ativo=True).all():
-            dias = (horario.domingo, horario.segunda, horario.terca, horario.quarta, horario.quinta,
-                    horario.sexta, horario.sabado)
-
-            for dia in dias:
-                if dia and horario.tipo_horario_trabalho.lower() == 'remoto':
-                    fim = datetime.strptime(horario.horario_fim, formato)
-                    inicio = datetime.strptime(horario.horario_inicio, formato)
-                    delta = (fim - inicio)
-                    horas_remoto += delta.days * 24 + delta.seconds / 3600
-
-        return horas_remoto
-
-    @property
     def carga_horaria_total(self):
         formato = '%Y-%m-%d'
         inicio = datetime.strptime('2022-12-12', formato)
         fim = datetime.strptime('2023-05-12', formato)
 
         num_semanas = sum(1 for _ in arrow.Arrow.span_range('week', inicio, fim)) - 1
-        return num_semanas * self.carga_horaria_semanal
+        return num_semanas * self.carga_horaria
 
 
 class HorarioTrabalho(models.Model):
@@ -141,21 +125,37 @@ class Entrega(models.Model):
         managed = False
         db_table = 'polare\".\"entrega'
 
+    def carga_horaria_tipo(self, tipo):
+        formato = '%H:%M'
+        horas = 0
+        for horario in self.plano_individual.horarios.filter(ativo=True).all():
+            dias = (horario.domingo, horario.segunda, horario.terca, horario.quarta, horario.quinta,
+                    horario.sexta, horario.sabado)
+
+            for dia in dias:
+                if dia and horario.tipo_horario_trabalho.lower() == tipo:
+                    fim = datetime.strptime(horario.horario_fim, formato)
+                    inicio = datetime.strptime(horario.horario_inicio, formato)
+                    delta = (fim - inicio)
+                    horas += delta.days * 24 + delta.seconds / 3600
+
+        return horas
+
     @property
     def tempo_presencial_estimado(self):
-        return 0
+        return self.carga_horaria_tipo('presencial')
 
     @property
     def tempo_presencial_programado(self):
-        return 0
+        return self.carga_horaria_tipo('presencial')
 
     @property
     def tempo_teletrabalho_estimado(self):
-        return self.plano_individual.carga_horaria_semanal
+        return self.carga_horaria_tipo('remoto')
 
     @property
     def tempo_teletrabalho_programado(self):
-        return self.plano_individual.carga_horaria_semanal
+        return self.carga_horaria_tipo('remoto')
 
 
 class Subtarefa(models.Model):

@@ -47,6 +47,7 @@ class PlanoIndividual(models.Model):
 
     class Meta:
         managed = False
+        ordering = ('id',)
         db_table = 'polare\".\"plano_individual'
 
     @property

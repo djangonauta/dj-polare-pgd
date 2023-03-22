@@ -7,7 +7,6 @@ As seguintes váriaveis devem ser definidas no arquivo projeto/settings/.env (ex
     DATABASE_URL='postgres://postgres:admin@localhost:5432/polaredb?options=-c search_path=polare'
     ADMINS='admin=admin@domain.com'
     EMAIL_URL='consolemail://:@'
-    BROKER_URL='amqp://igor:123@localhost:5672/projeto'
     PGD_LOGIN_URL=http://localhost:5057/auth/jwt/login
     PGD_PLANO_TRABALHO_URL=http://localhost:5057/plano_trabalho
     USERNAME=username@domain.com

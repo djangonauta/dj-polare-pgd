@@ -4,7 +4,7 @@ Instalação
 As seguintes váriaveis devem ser definidas no arquivo projeto/settings/.env (exemplos):
 
     SECRET_KEY='ztibsdwjar1v1pnp-6osx@r(1@!mfklak0$acg9^l^ut!7!sf1'
-    DATABASE_URL='postgres://postgres:admin@localhost:5432/polaredb?options=-c search_path=polare'
+    DATABASE_URL='postgres://postgres:admin@localhost:5432/polaredb'
     ADMINS='admin=admin@domain.com'
     EMAIL_URL='consolemail://:@'
     PGD_LOGIN_URL=http://localhost:5057/auth/jwt/login

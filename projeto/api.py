@@ -1,3 +1,4 @@
+
 from rest_framework import routers
 
 from projeto.apps.polare import api as polare_api

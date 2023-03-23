@@ -3,6 +3,8 @@ from datetime import datetime
 import arrow
 from django.db import models
 
+from . import managers
+
 
 class Unidade(models.Model):
 
@@ -44,6 +46,8 @@ class PlanoIndividual(models.Model):
         on_delete=models.DO_NOTHING,
         db_column='id_unidade_lotacao'
     )
+
+    objects = managers.PlanoIndividualManager()
 
     class Meta:
         managed = False

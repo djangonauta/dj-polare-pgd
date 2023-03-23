@@ -30,8 +30,7 @@ class ClientePGD:
         async with aiohttp.ClientSession() as session:
             headers = await self.obter_headers(session)
 
-            planos = models.PlanoIndividual.objects.all()
-            planos = planos.prefetch_related('entregas__subtarefas', 'entregas__atividade', 'horarios').all()
+            planos = models.PlanoIndividual.objects.planos_para_api()
 
             async for plano in planos:
                 url = f'{settings.PGD_PLANO_TRABALHO_URL}/{plano.id}'
@@ -64,6 +63,9 @@ class ClientePGD:
     def serializar(self, plano):
         return serializers.PlanoIndividualSerializer(instance=plano).data
 
+    def mensagem_sucesso(self):
+        return f'Total de registros processados: {self.total_registros}'
+
 
 class Command(BaseCommand):
 
@@ -79,11 +81,11 @@ class Command(BaseCommand):
         try:
             cliente = ClientePGD()
             asyncio.get_event_loop().run_until_complete(cliente.main())
-            logger.info(f'Total de registros processados: {cliente.total_registros}')
+            logger.info(cliente.mensagem_sucesso())
 
         except KeyboardInterrupt:
             logger.info('\nOperação cancelada pelo usuário.')
-            logger.info(f'Total de registros processados: {cliente.total_registros}')
+            logger.info(cliente.mensagem_sucesso())
 
         except Exception as e:
             logger.error(f'Erro de execução no script: {e}', exc_info=True)

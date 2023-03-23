@@ -124,7 +124,7 @@ STATICFILES_DIRS = [BASE_DIR / 'projeto' / 'assets']
 # https://www.django-rest-framework.org/
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),

@@ -46,3 +46,26 @@ class PlanoIndividualSerializer(serializers.ModelSerializer):
             instance.carga_horaria = 40
 
         return super().to_representation(instance)
+
+
+class SubTarefaSerializer(serializers.ModelSerializer):
+
+    finalizado = serializers.CharField(source='finalizado_texto')
+
+    class Meta:
+        model = models.Subtarefa
+        fields = ['id', 'ativo', 'versao', 'descricao', 'finalizado']
+
+
+class EntregaPROGEPSerializer(EntregaSerializer):
+
+    qtde_entregas = serializers.IntegerField(source='subtarefas.count')
+    subtarefas = SubTarefaSerializer(many=True)
+
+    class Meta(EntregaSerializer.Meta):
+        fields = EntregaSerializer.Meta.fields + ['data_inicio', 'data_fim', 'qtde_entregas', 'subtarefas']
+
+
+class PlanoIndividualPROGEPSerializer(PlanoIndividualSerializer):
+
+    atividades = EntregaPROGEPSerializer(source='entregas', many=True)

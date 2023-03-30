@@ -13,3 +13,8 @@ class PlanoIndividualViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_view_name(self):
         return 'Listagem de Planos Individuais'
+
+
+class PlanoIndividualPROGEPViewSet(PlanoIndividualViewSet):
+
+    serializer_class = serializers.PlanoIndividualPROGEPSerializer

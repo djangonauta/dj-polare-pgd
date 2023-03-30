@@ -175,3 +175,6 @@ class Subtarefa(models.Model):
     class Meta:
         managed = False
         db_table = 'polare\".\"subtarefa'
+
+    def finalizado_texto(self):
+        return 'Sim' if self.finalizado else 'Não'

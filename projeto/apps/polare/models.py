@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 
 import arrow
 from django.db import models
@@ -70,6 +70,20 @@ class PlanoIndividual(models.Model):
 
         num_semanas = sum(1 for _ in arrow.Arrow.span_range('week', inicio, fim)) - 1
         return num_semanas * self.carga_horaria
+
+    def data_inicial(self):
+        """Data inicial em função da reunião com a PROGEP (30/03/2023)"""
+        if self.ano_referencia <= 2022:
+            return date(2022, 12, 12)
+
+        return date(2023, 1, 1)
+
+    def data_final(self):
+        """Data final em função da reunião com a PROGEP (30/03/2023)"""
+        if self.ano_referencia <= 2022:
+            return date(2022, 12, 31)
+
+        return date(2023, 5, 12)
 
 
 class HorarioTrabalho(models.Model):

@@ -27,8 +27,8 @@ class PlanoIndividualSerializer(serializers.ModelSerializer):
     nome_unidade_exercicio = serializers.CharField(source='unidade_localizacao.nome')
     modalidade_execucao = serializers.IntegerField(source='modelo_trabalho_numero')
     carga_horaria_semanal = serializers.IntegerField(source='carga_horaria')
-    data_inicio = serializers.CharField(default='2022-12-12')
-    data_fim = serializers.CharField(default='2023-05-12')
+    data_inicio = serializers.DateField(source='data_inicial')
+    data_fim = serializers.DateField(source='data_final')
     carga_horaria_total = serializers.IntegerField()
     horas_homologadas = serializers.IntegerField(source='carga_horaria')
 

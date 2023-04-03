@@ -21,14 +21,12 @@ class PlanoIndividualSerializer(serializers.ModelSerializer):
 
     cod_plano = serializers.IntegerField(source='id')
     matricula_siape = serializers.CharField(source='siape')
-    cpf = serializers.CharField(default='80644414200')
+    cpf = serializers.CharField()
     nome_participante = serializers.CharField(source='nome')
     cod_unidade_exercicio = serializers.IntegerField(source='unidade_localizacao.codigo')
     nome_unidade_exercicio = serializers.CharField(source='unidade_localizacao.nome')
     modalidade_execucao = serializers.IntegerField(source='modelo_trabalho_numero')
     carga_horaria_semanal = serializers.IntegerField(source='carga_horaria')
-    data_inicio = serializers.DateField(source='data_inicial')
-    data_fim = serializers.DateField(source='data_final')
     carga_horaria_total = serializers.IntegerField()
     horas_homologadas = serializers.IntegerField(source='carga_horaria')
 
@@ -45,6 +43,7 @@ class PlanoIndividualSerializer(serializers.ModelSerializer):
         if instance.carga_horaria > 40:
             instance.carga_horaria = 40
 
+        instance.cpf = instance.cpf.zfill(11)
         return super().to_representation(instance)
 
 

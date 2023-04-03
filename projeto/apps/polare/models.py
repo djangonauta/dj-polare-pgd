@@ -27,6 +27,9 @@ class PlanoIndividual(models.Model):
     id = models.BigIntegerField(primary_key=True)
     ativo = models.BooleanField()
     versao = models.BigIntegerField()
+    cpf = models.CharField(max_length=14)
+    data_inicio = models.DateTimeField()
+    data_fim = models.DateTimeField()
     ano_referencia = models.IntegerField()
     carga_horaria = models.IntegerField(blank=True, null=True)
     equipe = models.CharField(max_length=255, blank=True, null=True)
@@ -70,20 +73,6 @@ class PlanoIndividual(models.Model):
 
         num_semanas = sum(1 for _ in arrow.Arrow.span_range('week', inicio, fim)) - 1
         return num_semanas * self.carga_horaria
-
-    def data_inicial(self):
-        """Data inicial em função da reunião com a PROGEP (30/03/2023)"""
-        if self.ano_referencia <= 2022:
-            return date(2022, 12, 12)
-
-        return date(2023, 1, 1)
-
-    def data_final(self):
-        """Data final em função da reunião com a PROGEP (30/03/2023)"""
-        if self.ano_referencia <= 2022:
-            return date(2022, 12, 31)
-
-        return date(2023, 5, 12)
 
 
 class HorarioTrabalho(models.Model):

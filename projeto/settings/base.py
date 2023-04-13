@@ -135,7 +135,7 @@ REST_FRAMEWORK = {
                                 'rest_framework.filters.SearchFilter',
                                 'rest_framework.filters.OrderingFilter'),
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-    'DATETIME_FORMAT': '%d/%m/%Y',
+    'DATETIME_FORMAT': '%Y-%m-%d',
 }
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
@@ -196,6 +196,6 @@ LOGGING = {
 }
 
 # Configuração referente a API PGD
-PGD_LOGIN_URL = env('PGD_LOGIN_URL')
-PGD_PLANO_TRABALHO_URL = env('PGD_PLANO_TRABALHO_URL')
-CREDENCIAIS = dict(username=env('USERNAME'), password=env('PASSWORD'))
+API_PGD_LOGIN_URL = env('API_PGD_LOGIN_URL')
+API_PGD_PLANO_TRABALHO_URL = env('API_PGD_PLANO_TRABALHO_URL')
+API_PGD_CREDENCIAIS = dict(username=env('API_PGD_USERNAME'), password=env('API_PGD_PASSWORD'))

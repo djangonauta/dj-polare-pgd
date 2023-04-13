@@ -33,7 +33,7 @@ class ClientePGD:
             planos = models.PlanoIndividual.objects.planos_para_api()
 
             async for plano in planos:
-                url = f'{settings.PGD_PLANO_TRABALHO_URL}/{plano.id}'
+                url = f'{settings.API_PGD_PLANO_TRABALHO_URL}/{plano.id}'
                 json = await self.serializar(plano)
                 async with session.put(url, json=json, headers=headers) as response:
                     if response.status == 200:
@@ -51,8 +51,8 @@ class ClientePGD:
         logger.info('Processamento finalizado.')
 
     async def obter_headers(self, session):
-        async with session.post(f'{settings.PGD_LOGIN_URL}', data=settings.CREDENCIAIS) as response:
-            conteudo = await response.json()
+        async with session.post(f'{settings.API_PGD_LOGIN_URL}', data=settings.API_PGD_CREDENCIAIS) as resp:
+            conteudo = await resp.json()
             if 'access_token' not in conteudo:
                 raise exceptions.CredencialPGDInvalida('Credenciais (login e/ou senha) inválidas.')
 

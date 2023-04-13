@@ -44,6 +44,8 @@ class PlanoIndividualSerializer(serializers.ModelSerializer):
             instance.carga_horaria = 40
 
         instance.cpf = instance.cpf.zfill(11)
+        instance.data_inicio = instance.data_inicio or '2022-12-12'
+        instance.data_fim = instance.data_fim or '2022-12-31'
         return super().to_representation(instance)
 
 

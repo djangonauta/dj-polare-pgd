@@ -32,7 +32,7 @@
           </div>
 
           <div class="mb-2">
-            <a href="{% url 'account_reset_password' %}" class="text-muted float-end"><small>Esqueceu sua senha?</small></a>
+            {% comment "" %}<a href="{% url 'account_reset_password' %}" class="text-muted float-end"><small>Esqueceu sua senha?</small></a>{% endcomment %}
             <label for="password" class="form-label">Senha</label>
             <div class="input-group input-group-merge">
               {% render_field form.password class="form-control" placeholder="Senha" %}

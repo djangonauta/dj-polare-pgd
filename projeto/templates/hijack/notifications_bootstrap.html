@@ -1,0 +1,13 @@
+<div id="hijacked-warning" class="alert alert-warning mt-2" role="alert">
+  Você está logado como o usuário {{ user }}.
+  <div class="hijacked-warning-controls">
+    <form action="{% url 'hijack:release_hijack' %}" method="POST">{% csrf_token %}
+      <button type="submit" class="btn btn-secondary btn-sm">
+        Deslogar {{ user }}
+      </button>
+    </form>
+    <form action="{% url 'hijack:disable_hijack_warning' %}?next={{ request.path }}" method="POST">{% csrf_token %}
+      <button type="submit" class="close" data-dismiss="alert">×</button>
+    </form>
+  </div>
+</div>

@@ -1,6 +1,8 @@
 import pathlib
 
 import environ
+from django import urls
+from django.conf import global_settings
 
 env = environ.Env()
 environ.Env.read_env()
@@ -49,11 +51,24 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'auditlog',
+    'django_celery_beat',
+    'django_celery_results',
     'django_extensions',
+    'hijack',
+    'hijack.contrib.admin',
+    'post_office',
     'rest_framework',
+    'widget_tweaks',
 ]
 
 PROJECT_APPS = [
+    'projeto.apps.administrativo',
+    'projeto.apps.administrativo.usuarios',
+    'projeto.apps.arquitetura',
     'projeto.apps.polare',
 ]
 
@@ -65,8 +80,10 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'auditlog.middleware.AuditlogMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'hijack.middleware.HijackUserMiddleware',
 ]
 
 SITE_ID = 1
@@ -121,10 +138,62 @@ STATIC_URL = '/public/'
 STATIC_ROOT = BASE_DIR / 'public'
 STATICFILES_DIRS = [BASE_DIR / 'projeto' / 'assets']
 
+MEDIA_URL = '/downloads/'
+MEDIA_ROOT = BASE_DIR / 'downloads'
+
+AUTH_USER_MODEL = 'usuarios.Usuario'
+LOGIN_URL = urls.reverse_lazy('account_login')
+LOGIN_REDIRECT_URL = urls.reverse_lazy('app')
+
+# https://django-allauth.readthedocs.io/en/latest/
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = env('ACCOUNT_EMAIL_VERIFICATION', default='none')  # 'mandatory'
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = ''
+if env('DISABLE_ACCOUNT_REGISTRATION', default=False):
+    ACCOUNT_ADAPTER = 'projeto.apps.administrativo.usuarios.adapters.DisableSignupAdapter'
+    REST_AUTH_REGISTER_SERIALIZERS = {
+        'REGISTER_SERIALIZER': 'projeto.apps.administrativo.usuarios.serializers.DisableSignupSerializer'
+    }
+
+OLD_PASSWORD_FIELD_ENABLED = True
+
+AUTHENTICATION_BACKENDS = global_settings.AUTHENTICATION_BACKENDS + \
+    ['django_auth_ldap.backend.LDAPBackend',
+     'allauth.account.auth_backends.AuthenticationBackend']
+
+# https://django-auth-ldap.readthedocs.io/en/latest/
+AUTH_LDAP_SERVER_URI = env('AUTH_LDAP_SERVER_URI', default='')
+AUTH_LDAP_USER_DN_TEMPLATE = env('AUTH_LDAP_SERVER_URI', default='')
+
+# https://docs.djangoproject.com/en/dev/topics/i18n/
+LOCALE_PATHS = [BASE_DIR / 'projeto' / 'locale']
+
+# https://docs.celeryq.dev/en/stable/userguide/configuration.html
+CELERY_BROKER_URL = env('BROKER_URL')
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# https://django-extensions.readthedocs.io/en/latest/graph_models.html
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': True,
+}
+
+# https://docs.djangoproject.com/en/dev/topics/cache/
+env.CACHE_SCHEMES.update(redis='django.core.cache.backends.redis.RedisCache')
+CACHES = {'default': env.cache_url()}
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
 # https://www.django-rest-framework.org/
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
@@ -194,8 +263,3 @@ LOGGING = {
         },
     }
 }
-
-# Configuração referente a API PGD
-API_PGD_LOGIN_URL = env('API_PGD_LOGIN_URL')
-API_PGD_PLANO_TRABALHO_URL = env('API_PGD_PLANO_TRABALHO_URL')
-API_PGD_CREDENCIAIS = dict(username=env('API_PGD_USERNAME'), password=env('API_PGD_PASSWORD'))

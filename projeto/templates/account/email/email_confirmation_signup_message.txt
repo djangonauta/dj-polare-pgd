@@ -1,0 +1,7 @@
+Olá {{ user.username.capitalize }}!
+
+Recebemos uma solicitação de registro em nosso site (http://{{ current_site.domain }}). Se você não fez uma solicitação de registro, pedimos que por favor ignore esse email.
+
+Para completar o processo de registro, clique no link a seguir (ou copie e cole no seu navegador).
+
+{{ activate_url }}

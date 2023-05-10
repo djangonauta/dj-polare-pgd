@@ -1,0 +1,7 @@
+<h5>Olá {{ user.username.capitalize }}!</h5>
+
+<p>Recebemos uma solicitação de registro em nosso site (<a href="http://{{ current_site.domain }}">http://{{ current_site.domain }}</a>) através de seu email {{ user.email }}. Se você não fez uma solicitação de registro, pedimos que por favor ignore esse email.</p>
+
+<p>Para completar o processo de registro, clique no link a seguir (ou copie e cole no seu navegador).</p>
+
+<p><a href="{{ activate_url }}" target="_blank">{{ activate_url }}</a></p>

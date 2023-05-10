@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Registro suspenso{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+  <div class="row align-items-center" style="height: 100vh">
+    <div class="col"></div>
+    <div class="col-4">
+      <div class="card">
+        <div class="card-header">Registro de Contas</div>
+        
+        <div class="card-body">
+          <div class="alert alert-danger">
+            O serviço para incluir novas contas está temporariamente
+            fechado. Pedimos desculpas pelo inconveniente. Para mais detalhes, entre em contato com a administração. Obrigado.
+          </div>
+          <hr/>
+          <a href="{% url 'account_login' %}" class="btn btn-primary btn-sm btn-block">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>
+{% endblock %}

@@ -4,10 +4,13 @@ from django.conf.urls import static
 from django.contrib import admin
 from django.views import generic
 
-from . import api
+from . import api, views
 
 urlpatterns = [
-    urls.path('', generic.RedirectView.as_view(url='/api/v1/', permanent=True)),
+    urls.path('', generic.RedirectView.as_view(url=urls.reverse_lazy('app'), permanent=True)),
+    urls.path('app/', views.app, name='app'),
+    urls.path('contas/', urls.include('allauth.urls')),
+    urls.path('hijack/', urls.include('hijack.urls', namespace='hijack')),
     urls.path('api/v1/', api.urls),
     urls.path('api-auth/', urls.include('rest_framework.urls', namespace='rest_framework')),
     urls.path('admin/', admin.site.urls),

@@ -1,0 +1,113 @@
+{% extends 'base.html' %}{% load widget_tweaks static %}
+{% block body_class %}loading auth-fluid-pages pb-0{% endblock body_class %}
+{% block title %}Registrar{% endblock %}
+
+{% block body %}
+<div class="auth-fluid">
+  <!-- Auth fluid right content -->
+  <div class="auth-fluid-right bg-transparent">
+    <div class="auth-user-testimonial">
+      <h3 class="mb-3 text-white">Very elegant & impressive!</h3>
+      <p class="lead fw-normal"><i class="mdi mdi-format-quote-open"></i> I've been using this theme for a while and I
+        must say that whenever I am looking for a design - I refer to this theme for specifics & implementation. With
+        wide arrays of components, designs, charts - I would highly recommend this theme for anyone using it for
+        dashboard or project management usage.. <i class="mdi mdi-format-quote-close"></i>
+      </p>
+      <h5 class="text-white">
+        - Admin User
+      </h5>
+    </div> <!-- end auth-user-testimonial-->
+  </div>
+  <!-- end Auth fluid right content -->
+
+  <!--Auth fluid left content -->
+  <div class="auth-fluid-form-box">
+    <div class="align-items-center d-flex h-100">
+      <div class="card-body">
+
+        {% if form.non_field_errors %}
+          <div class="alert alert-warning mb-3">
+            {{ form.non_field_errors.0 }}
+          </div>
+        {% endif %}
+
+        <h4 class="mt-0">Registro</h4>
+        <p class="text-muted mb-3">Preencha e envie o formulário abaixo para iniciar seu processo de cadastro.</p>
+
+        <!-- form -->
+        <form action="" method="post">{% csrf_token %}
+          <div class="mb-3">
+            <label for="id_username" class="form-label">Nome de usuário</label>
+            {% if form.username.errors %}
+              {% render_field form.username class="form-control form-control-sm is-invalid" required="required" %}
+              <div class="invalid-feedback">
+                {{ form.username.errors.0 }}
+              </div>
+            {% else %}
+              {% render_field form.username class="form-control form-control-sm" required="required" %}
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            <label for="id_email" class="form-label">Email</label>
+            {% if form.email.errors %}
+              {% render_field form.email class="form-control form-control-sm is-invalid" required="required" %}
+              <div class="invalid-feedback">
+                {{ form.email.errors.0 }}
+              </div>
+            {% else %}
+              {% render_field form.email class="form-control form-control-sm" required="required" %}
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            <label for="id_password1" class="form-label">Senha</label>
+            {% if form.password1.errors %}
+              {% render_field form.password1 class="form-control form-control-sm is-invalid" required="required" %}
+              <div class="invalid-feedback">
+                {{ form.password1.errors.0 }}
+              </div>
+            {% else %}
+              {% render_field form.password1 class="form-control form-control-sm" required="required" %}
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            <label for="id_password2" class="form-label">Confirmar Senha</label>
+            {% if form.password2.errors %}
+              {% render_field form.password2 class="form-control form-control-sm is-invalid" required="required" %}
+              <div class="invalid-feedback">
+                {{ form.password2.errors.0 }}
+              </div>
+            {% else %}
+              {% render_field form.password2 class="form-control form-control-sm" required="required" %}
+            {% endif %}
+          </div>
+          <!--<div class="mb-3">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="checkbox-signup">
+              <label class="form-check-label" for="checkbox-signup">
+                Eu aceito os <a href="javascript: void(0);" class="text-dark">Termos e Condições</a>
+              </label>
+            </div>
+          </div>-->
+          <div class="text-center d-grid">
+            <button class="btn btn-primary waves-effect waves-light" type="submit">
+              <mdi class="mdi mdi-login"></mdi> Registrar </button>
+          </div>
+        </form>
+
+        <!-- Footer-->
+        <footer class="footer footer-alt">
+          <p class="text-muted">Já tem uma conta?
+            <a href="{% url 'account_login' %}" class="text-primary fw-medium ms-1">Login</a>
+          </p>
+        </footer>
+
+      </div> <!-- end .card-body -->
+    </div> <!-- end .align-items-center.d-flex.h-100-->
+  </div>
+  <!-- end auth-fluid-form-box-->
+</div>
+<!-- end auth-fluid-->
+{% endblock %}

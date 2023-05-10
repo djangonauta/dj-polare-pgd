@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime
 
 import arrow
 from django.db import models

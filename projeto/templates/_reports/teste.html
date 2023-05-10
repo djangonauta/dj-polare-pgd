@@ -1,0 +1,31 @@
+{% extends '_reports/base.html' %}
+
+{% block style %}
+<style>
+  @page {
+    size: A4;
+  }
+
+  p {
+    font-size: 12px;
+    font-family: 'Times New Roman', Times, serif;
+  }
+</style>
+{% endblock style %}
+
+{% block body_class %}A4{% endblock body_class %}
+
+{% block conteudo %}
+<section class="sheet padding-10mm">
+  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Et cum atque eius quisquam laudantium
+    doloremque maiores nobis beatae error omnis ullam eligendi ipsam, fuga, accusantium inventore
+    voluptatum dolore vero odio.</p>
+  <p>{{ mensagem }}</p>
+  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Et cum atque eius quisquam laudantium
+    doloremque maiores nobis beatae error omnis ullam eligendi ipsam, fuga, accusantium inventore
+    voluptatum dolore vero odio.</p>
+  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Et cum atque eius quisquam laudantium
+    doloremque maiores nobis beatae error omnis ullam eligendi ipsam, fuga, accusantium inventore
+    voluptatum dolore vero odio.</p>
+</section>
+{% endblock conteudo %}

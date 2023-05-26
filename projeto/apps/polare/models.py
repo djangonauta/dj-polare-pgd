@@ -21,6 +21,9 @@ class Unidade(models.Model):
         managed = False
         db_table = 'polare\".\"unidade'
 
+    def __str__(self):
+        return f'{self.nome} ({self.codigo})'
+
 
 class PlanoIndividual(models.Model):
 

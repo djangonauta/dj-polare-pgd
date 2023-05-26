@@ -1,6 +1,6 @@
 <div class="left-side-menu">{% load static %}
   <div class="logo-box">
-    <a href="{% url 'app' %}" class="logo logo-light text-center">
+    <a href="{% url 'polare:home' %}" class="logo logo-light text-center">
       <span class="logo-sm">
         <img src="{% static 'app/images/logo-sm.png' %}" alt="" height="24">
       </span>
@@ -55,29 +55,21 @@
       <ul id="side-menu">
 
         <li class="menu-title">Relatórios</li>
-        {% comment "" %}
         <li>
-          <a href="#sidebarDashboards" data-bs-toggle="collapse" aria-expanded="false"
-            aria-controls="sidebarDashboards" class="waves-effect">
-            <i class="mdi mdi-view-dashboard"></i>
-            <span class="badge bg-success rounded-pill float-end">3</span>
-            <span> Dashboards </span>
+          <a href="#sidebarDashboards" data-bs-toggle="collapse" class="waves-effect">
+            <i class="mdi mdi-poll"></i>
+            <span> Quantitativo </span>
           </a>
           <div class="collapse" id="sidebarDashboards">
             <ul class="nav-second-level">
               <li>
-                <a href="{% url 'app' %}">Sales</a>
-              </li>
-              <li>
-                <a href="dashboard-crm.html">CRM</a>
-              </li>
-              <li>
-                <a href="dashboard-analytics.html">Analytics</a>
+                <a href="{% url 'polare:quantitativo_geral' %}">Geral</a>
               </li>
             </ul>
           </div>
         </li>
 
+        {% comment "" %}
         <li>
           <a href="#sidebarLayouts" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebarLayouts">
             <i class="mdi mdi-cellphone-link"></i>

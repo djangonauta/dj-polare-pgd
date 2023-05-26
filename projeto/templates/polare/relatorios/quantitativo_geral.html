@@ -1,0 +1,80 @@
+{% extends 'base.html' %}{% load widget_tweaks %}
+
+{% block conteudo %}
+<div class="row mt-3">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="header-title">Filtros</h4>
+        <p class="sub-header">
+          Os campos abaixo são os filtros utilizados na busca. Um campo em branco não é adicionado na filtragem de registros.
+        </p>
+        <form action="" method="GET">
+          <div class="row">
+            <div class="col-3">
+              <label for="">Nome</label>
+              {% render_field filter.form.nome class="form-control form-control-sm" %}
+            </div>
+            <div class="col-3">
+              <label for="">Siape</label>
+              {% render_field filter.form.siape class="form-control form-control-sm" %}
+            </div>
+            <div class="col d-flex align-items-end">
+              <button class="btn btn-primary btn-sm">Buscar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="header-title">Relatório de Planos Individuais</h4>
+        <p class="sub-header">
+          Total de Planos: {{ paginator.count }}
+        </p>
+        
+        <div class="row">
+          <div class="col">
+            <hr/>
+            <table class="table table-striped dt-responsive nowrap w-100">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Siape</th>
+                  <th>Unidade</th>
+                  <th>Ano Referência</th>
+                  <th>Intervalo</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+    
+    
+              <tbody>
+                {% for plano in planos %}
+                  <tr>
+                    <td>{{ plano.nome }}</td>
+                    <td>{{ plano.siape }}</td>
+                    <td>{{ plano.unidade_localizacao }}</td>
+                    <td>{{ plano.ano_referencia }}</td>
+                    <td>{{ plano.data_inicio|date:"d/m/yy" }} - {{ plano.data_fim|date:"d/m/yy" }}</td>
+                    <td>
+                      <a class="btn btn-sm btn-secondary" href="" title="Visualizar">
+                        <i class="fas fa-search-plus"></i>
+                      <a/>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% include '_includes/paginador.html' %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock conteudo %}

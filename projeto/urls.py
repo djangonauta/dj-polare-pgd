@@ -4,11 +4,11 @@ from django.conf.urls import static
 from django.contrib import admin
 from django.views import generic
 
-from . import api, views
+from . import api
 
 urlpatterns = [
-    urls.path('', generic.RedirectView.as_view(url=urls.reverse_lazy('app'), permanent=True)),
-    urls.path('app/', views.app, name='app'),
+    urls.path('', generic.RedirectView.as_view(url=urls.reverse_lazy('polare:home'), permanent=True)),
+    urls.path('polare/', urls.include('projeto.apps.polare.urls', namespace='polare')),
     urls.path('contas/', urls.include('allauth.urls')),
     urls.path('hijack/', urls.include('hijack.urls', namespace='hijack')),
     urls.path('api/v1/', api.urls),

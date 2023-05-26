@@ -143,7 +143,7 @@ MEDIA_ROOT = BASE_DIR / 'downloads'
 
 AUTH_USER_MODEL = 'usuarios.Usuario'
 LOGIN_URL = urls.reverse_lazy('account_login')
-LOGIN_REDIRECT_URL = urls.reverse_lazy('app')
+LOGIN_REDIRECT_URL = urls.reverse_lazy('polare:home')
 
 # https://django-allauth.readthedocs.io/en/latest/
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'

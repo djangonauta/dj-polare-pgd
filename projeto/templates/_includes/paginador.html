@@ -3,10 +3,10 @@
   <ul class="pagination justify-content-center">
     {% if page_obj.has_previous %}
       <li class="page-item">
-        <a class="page-link" href="?{{ page_kwarg }}=1"><i class="fe-chevrons-left"></i></a>
+        <a class="page-link" href="?{{ view.page_kwarg }}=1"><i class="fe-chevrons-left"></i></a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="?{{ page_kwarg }}={{ page_obj.previous_page_number }}{% if filter.query_params %}&{{ filter.query_params }}{% endif %}">
+        <a class="page-link" href="?{{ view.page_kwarg }}={{ page_obj.previous_page_number }}{% if filter.query_params %}&{{ filter.query_params }}{% endif %}">
           <i class="fe-chevron-left"></i>
         </a>
       </li>
@@ -21,18 +21,18 @@
         {% if i == page_obj.paginator.ELLIPSIS %}
           <li class="page-item"><span class="page-link">{{ i }}</span></li>
         {% else %}
-          <li class="page-item"><a class="page-link" href="?{{ page_kwarg }}={{ i }}{% if filter.query_params %}&{{ filter.query_params }}{% endif %}">{{ i }}</a></li>
+          <li class="page-item"><a class="page-link" href="?{{ view.page_kwarg }}={{ i }}{% if filter.query_params %}&{{ filter.query_params }}{% endif %}">{{ i }}</a></li>
         {% endif %}
       {% endif %}
     {% endfor %}
     {% if page_obj.has_next %}
       <li class="page-item">
-        <a class="page-link" href="?{{ page_kwarg }}={{ page_obj.next_page_number }}{% if filter.query_params %}&{{ filter.query_params }}{% endif %}">
+        <a class="page-link" href="?{{ view.page_kwarg }}={{ page_obj.next_page_number }}{% if filter.query_params %}&{{ filter.query_params }}{% endif %}">
           <i class="fe-chevron-right"></i>
         </a>
       </li>
       <li class="page-item">
-        <a class="page-link" href="?{{ page_kwarg }}={{ page_obj.paginator.num_pages }}">
+        <a class="page-link" href="?{{ view.page_kwarg }}={{ page_obj.paginator.num_pages }}">
           <i class="fe-chevrons-right"></i>
         </a>
       </li>

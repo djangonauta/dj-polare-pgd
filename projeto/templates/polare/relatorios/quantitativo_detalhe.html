@@ -1,0 +1,125 @@
+{% extends 'base.html' %}{% load static %}
+
+{% block conteudo %}
+<div class="row mt-3">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="header-title">Plano Individual ({{ plano.ano_referencia }}) - {{ plano.nome }} ({{ plano.siape }})</h4>
+        <table class="table table-bordered table-hover table-striped mt-3">
+          <tbody>
+            <tr>
+              <td>Código do Plano</td>
+              <td>{{ plano.pk }}</td>
+            </tr>
+            <tr>
+              <td>Matrícula</td>
+              <td>{{ plano.siape }}</td>
+            </tr>
+            <tr>
+              <td>CPF</td>
+              <td>{{ plano.cpf }}</td>
+            </tr>
+            <tr>
+              <td>Nome do Participante</td>
+              <td>{{ plano.nome }}</td>
+            </tr>
+            <tr>
+              <td>Unidade</td>
+              <td>{{ plano.unidade_localizacao.nome }} ({{ plano.unidade_localizacao.codigo }})</td>
+            </tr>
+            <tr>
+              <td>Modalidade de Execução</td>
+              <td>{{ plano.modelo_trabalho }}</td>
+            </tr>
+            <tr>
+              <td>Carga horária semanal</td>
+              <td>{{ plano.carga_horaria }} hora(s)</td>
+            </tr>
+            <tr>
+              <td>Início do plano</td>
+              <td>{{ plano.data_inicio|date:"m/d/yy" }}</td>
+            </tr>
+            <tr>
+              <td>Fim do plano</td>
+              <td>{{ plano.data_fim|date:"m/d/yy" }}</td>
+            </tr>
+            <tr>
+              <td>Carga horária total</td>
+              <td>{{ plano.carga_horaria_total }} hora(s)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="header-title mb-3">Andamento das entregas</h4>
+        <div id="placeholder" class="flot-chart" style="height:500px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock conteudo %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script src="{% static 'app/libs/flot-charts/jquery.flot.js' %}"></script>
+  <script src="{% static 'app/libs/flot-charts/jquery.flot.categories.js' %}"></script>
+  <script src="{% static 'app/libs/flot-charts/jquery.flot.canvas.js' %}"></script>
+  <script src="{% static 'app/libs/jquery.flot.tooltip/js/jquery.flot.tooltip.min.js' %}"></script>
+  <script>
+    $(function() {
+      $.plot($("#placeholder"), [{
+        data: {{ data|safe }},
+        label: 'Total de subtarefas X Entregas',
+        color: '#0056c1'
+      }], {
+        tooltip : true,
+        tooltipOpts : {
+          content : 'Entrega finalizada no dia %x contendo %y subtarefas',
+          shifts : {
+            x : -60,
+            y : 25
+          },
+          defaultTheme : false
+        },
+        grid : {
+          hoverable : true,
+          clickable : true,
+          borderColor : 'rgba(65, 80, 95, 0.07)',
+          tickColor : "transparent",
+          borderWidth : 1,
+          labelMargin : 10,
+          backgroundColor : 'transparent'
+        },
+        legend : {
+          position: "ne",
+          margin : [0, -32],
+          noColumns : 0,
+          labelBoxBorderColor : null,
+          labelFormatter : function(label, series) {
+            return '' + label + '&nbsp;&nbsp;';
+          },
+          width : 30,
+          height : 2
+        },
+        yaxis : {
+          axisLabel: "Total de subtarefas",
+          tickColor : 'rgba(65, 80, 95, 0.07)',
+          color : '#8391a2',
+          tickDecimals: 0,
+          tickSize: 1
+        },
+        xaxis : {
+          axisLabel: "Entregas",
+          show : true,
+          tickColor : 'rgba(65, 80, 95, 0.07)',
+          color : '#8391a2',
+          mode: 'categories'
+        }
+      });
+    })
+  </script>
+{% endblock scripts %}

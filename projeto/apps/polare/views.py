@@ -1,5 +1,6 @@
 import django_filters
 from django.contrib.auth import mixins
+from django.db.models import Count
 from django.views import generic
 
 from projeto.apps.arquitetura.filters import QueryParamFilterSet
@@ -41,7 +42,7 @@ home = HomeView.as_view()
 
 class PlanoIndividualFilter(QueryParamFilterSet):
 
-    nome = django_filters.CharFilter(label='Nome', lookup_expr='icontains')
+    nome = django_filters.CharFilter(label='Nome', lookup_expr='istartswith')
     siape = django_filters.CharFilter(lookup_expr='exact')
 
     class Meta:
@@ -62,3 +63,22 @@ class QuantitativoGeral(ElidedListView):
 
 
 quantitativo_geral = QuantitativoGeral.as_view()
+
+
+class QuantitativoDetalhe(generic.DetailView):
+
+    template_name = 'polare/relatorios/quantitativo_detalhe.html'
+    model = models.PlanoIndividual
+    context_object_name = 'plano'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        queryset = PlanoIndividual.objects.get(id=969).entregas.prefetch_related('subtarefas')
+        queryset = queryset.annotate(totalsub=Count('subtarefas'))
+        data = [[p.intervalo, p.totalsub] for p in queryset]
+
+        ctx['data'] = data
+        return ctx
+
+
+quantitativo_detalhe = QuantitativoDetalhe.as_view()

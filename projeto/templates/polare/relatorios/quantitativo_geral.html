@@ -62,7 +62,7 @@
                     <td>{{ plano.ano_referencia }}</td>
                     <td>{{ plano.data_inicio|date:"d/m/yy" }} - {{ plano.data_fim|date:"d/m/yy" }}</td>
                     <td>
-                      <a class="btn btn-sm btn-secondary" href="" title="Visualizar">
+                      <a class="btn btn-sm btn-secondary" href="{% url 'polare:quantitativo_detalhe' plano.pk %}" title="Visualizar">
                         <i class="fas fa-search-plus"></i>
                       <a/>
                     </td>
@@ -78,3 +78,14 @@
   </div>
 </div>
 {% endblock conteudo %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script>
+    $(function() {
+      setTimeout(function() {
+        $('#id_nome').select();
+      }, 500);
+    })
+  </script>
+{% endblock scripts %}

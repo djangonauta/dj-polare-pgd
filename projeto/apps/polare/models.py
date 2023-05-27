@@ -168,6 +168,10 @@ class Entrega(models.Model):
     def tempo_teletrabalho_programado(self):
         return self.carga_horaria_tipo('remoto')
 
+    @property
+    def intervalo(self):
+        return f'{self.data_fim.strftime("%d/%m")}'
+
 
 class Subtarefa(models.Model):
 

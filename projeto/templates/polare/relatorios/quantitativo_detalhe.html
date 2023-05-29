@@ -68,14 +68,39 @@
   <script src="{% static 'app/libs/flot-charts/jquery.flot.js' %}"></script>
   <script src="{% static 'app/libs/flot-charts/jquery.flot.categories.js' %}"></script>
   <script src="{% static 'app/libs/flot-charts/jquery.flot.canvas.js' %}"></script>
+  <script src="{% static 'app/libs/flot-charts/jquery.flot.stack.js' %}"></script>
+  <script src="{% static 'app/libs/flot-charts/jquery.flot.navigate.js' %}"></script>
   <script src="{% static 'app/libs/jquery.flot.tooltip/js/jquery.flot.tooltip.min.js' %}"></script>
   <script>
     $(function() {
       $.plot($("#placeholder"), [{
         data: {{ data|safe }},
-        label: 'Total de subtarefas X Entregas',
+        label: 'Total de subtarefas X Entrega',
         color: '#0056c1'
       }], {
+        series: {
+          stack: 0,
+          bars: {
+            show: true,
+            barWidth: 0.2
+          }
+        },
+        zoom: {
+          interactive: true,
+          active: true,
+          amount: 1.5,         // 2 = 200% (zoom in), 0.5 = 50% (zoom out)
+          enableTouch: true
+        },
+        pan: {
+          interactive: true,
+          active: true,
+          cursor: "move",     // CSS mouse cursor value used when dragging, e.g. "pointer"
+          frameRate: 60,
+          mode: "smart",       // enable smart pan mode
+          enableTouch: true,
+          touchMode: ""
+        },
+        colors: ['#e3eaef','#3bafda','#1abc9c'],
         tooltip: {
           show: true,
           content : 'Total de subtarefas: %y',

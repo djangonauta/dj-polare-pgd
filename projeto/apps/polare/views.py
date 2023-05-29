@@ -75,7 +75,13 @@ class QuantitativoDetalhe(generic.DetailView):
         ctx = super().get_context_data(**kwargs)
         queryset = PlanoIndividual.objects.get(pk=self.kwargs['pk']).entregas.prefetch_related('subtarefas')
         queryset = queryset.annotate(totalsub=Count('subtarefas'))
-        data = [[p.intervalo, p.totalsub] for p in queryset]
+        dados = {}
+        for p in queryset:
+            dados.setdefault(p.intervalo, []).append(p.totalsub)
+
+        data = []
+        for k, v in dados.items():
+            data.append([k, sum(v)])
 
         ctx['data'] = data
         return ctx

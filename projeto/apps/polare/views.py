@@ -81,7 +81,7 @@ class QuantitativoDetalhe(generic.DetailView):
 
         data = []
         for k, v in dados.items():
-            data.append([k, sum(v)])
+            data.append([f'{len(v)} entrega(s)\n{k}', sum(v)])
 
         ctx['data'] = data
         return ctx

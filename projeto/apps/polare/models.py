@@ -170,7 +170,7 @@ class Entrega(models.Model):
 
     @property
     def intervalo(self):
-        return f'{self.data_fim.strftime("%d/%m")}'
+        return f'[{self.data_inicio.strftime("%d/%e")} - {self.data_fim.strftime("%d/%m")}]'
 
 
 class Subtarefa(models.Model):

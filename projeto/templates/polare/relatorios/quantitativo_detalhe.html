@@ -56,7 +56,7 @@
     <div class="card">
       <div class="card-body">
         <h4 class="header-title mb-3">Andamento das entregas</h4>
-        <div id="placeholder" class="flot-chart" style="height:500px"></div>
+        <div id="chart" class="flot-chart" style="height:500px"></div>
       </div>
     </div>
   </div>
@@ -73,7 +73,7 @@
   <script src="{% static 'app/libs/jquery.flot.tooltip/js/jquery.flot.tooltip.min.js' %}"></script>
   <script>
     $(function() {
-      $.plot($("#placeholder"), [{
+      var plot = $.plot($("#chart"), [{
         data: {{ data|safe }},
         label: 'Total de subtarefas X Entrega',
         color: '#0056c1'
@@ -131,20 +131,21 @@
           height : 2
         },
         yaxis : {
-          axisLabel: "Total de subtarefas",
           tickColor : 'rgba(65, 80, 95, 0.07)',
           color : '#8391a2',
           tickDecimals: 0,
           tickSize: 1
         },
         xaxis : {
-          axisLabel: "Entregas",
           show : true,
           tickColor : 'rgba(65, 80, 95, 0.07)',
           color : '#8391a2',
           mode: 'categories'
         }
       });
+
+      var ids = {{ ids|safe}};
+      console.log(plot.getAxes().xaxis)
     })
   </script>
 {% endblock scripts %}

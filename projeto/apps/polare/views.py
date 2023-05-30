@@ -76,15 +76,28 @@ class QuantitativoDetalhe(generic.DetailView):
         queryset = PlanoIndividual.objects.get(pk=self.kwargs['pk']).entregas.prefetch_related('subtarefas')
         queryset = queryset.annotate(totalsub=Count('subtarefas'))
         dados = {}
+        ids = []
         for p in queryset:
             dados.setdefault(p.intervalo, []).append(p.totalsub)
+            ids.append(p.pk)
 
         data = []
         for k, v in dados.items():
             data.append([f'{len(v)} entrega(s)\n{k}', sum(v)])
 
         ctx['data'] = data
+        ctx['ids'] = ids
         return ctx
 
 
 quantitativo_detalhe = QuantitativoDetalhe.as_view()
+
+
+class EntregaDetalhe(generic.DetailView):
+
+    template_name = 'polare/entregas/entrega_detalhe.html'
+    model = models.Entrega
+    context_object_name = 'entrega'
+
+
+entrega_detalhe = EntregaDetalhe.as_view()

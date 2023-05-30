@@ -1,0 +1,64 @@
+{% extends 'base.html' %}{% load static %}
+
+{% block conteudo %}
+<div class="row mt-3">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="header-title">Entrega ({{ entrega.plano_individual.ano_referencia }}) - {{ entrega.plano_individual.nome }} ({{ entrega.plano_individual.siape }})</h4>
+        <table class="table table-bordered table-hover table-striped mt-3">
+          <tbody>
+            <tr>
+              <td>Código do Plano</td>
+              <td>{{ entrega.plano_individual.pk }}</td>
+            </tr>
+            <tr>
+              <td>Matrícula</td>
+              <td>{{ entrega.plano_individual.siape }}</td>
+            </tr>
+            <tr>
+              <td>CPF</td>
+              <td>{{ entrega.plano_individual.cpf }}</td>
+            </tr>
+            <tr>
+              <td>Nome do Participante</td>
+              <td>{{ entrega.plano_individual.nome }}</td>
+            </tr>
+            <tr>
+              <td>Unidade</td>
+              <td>{{ entrega.plano_individual.unidade_localizacao.nome }} ({{ entrega.plano_individual.unidade_localizacao.codigo }})</td>
+            </tr>
+            <tr>
+              <td>Modalidade de Execução</td>
+              <td>{{ entrega.plano_individual.modelo_trabalho }}</td>
+            </tr>
+            <tr>
+              <td>Carga horária semanal</td>
+              <td>{{ entrega.plano_individual.carga_horaria }} hora(s)</td>
+            </tr>
+            <tr>
+              <td>Início do plano</td>
+              <td>{{ entrega.plano_individual.data_inicio|date:"m/d/yy" }}</td>
+            </tr>
+            <tr>
+              <td>Fim do plano</td>
+              <td>{{ entrega.plano_individual.data_fim|date:"m/d/yy" }}</td>
+            </tr>
+            <tr>
+              <td>Carga horária total</td>
+              <td>{{ entrega.plano_individual.carga_horaria_total }} hora(s)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="header-title mb-3">Subtarefas</h4>
+        <div id="placeholder" class="flot-chart" style="height:500px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock conteudo %}

@@ -211,6 +211,11 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# PGD https://api-programadegestao.economia.gov.br/docs
+API_PGD_LOGIN_URL = env('API_PGD_LOGIN_URL')
+API_PGD_PLANO_TRABALHO_URL = env('API_PGD_PLANO_TRABALHO_URL')
+API_PGD_CREDENCIAIS = env.dict('API_PGD_CREDENCIAIS')
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.

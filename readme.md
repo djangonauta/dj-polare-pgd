@@ -7,10 +7,9 @@ As seguintes váriaveis devem ser definidas no arquivo projeto/settings/.env (ex
     DATABASE_URL='postgres://postgres:admin@localhost:5432/polaredb'
     ADMINS='admin=admin@domain.com'
     EMAIL_URL='consolemail://:@'
-    API_PGD_LOGIN_URL=http://localhost:5057/auth/jwt/login
-    API_PGD_PLANO_TRABALHO_URL=http://localhost:5057/plano_trabalho
-    API_PGD_USERNAME=username@domain.com
-    API_PGD_PASSWORD=admin
+    API_PGD_LOGIN_URL='http://hom.api.programadegestao.economia.gov.br/auth/jwt/login'
+    API_PGD_PLANO_TRABALHO_URL='http://hom.api.programadegestao.economia.gov.br/plano_trabalho'
+    API_PGD_CREDENCIAIS='username=igor.carvalho@ifpa.edu.br,password=admin'
 
 
 Problemas Identificados

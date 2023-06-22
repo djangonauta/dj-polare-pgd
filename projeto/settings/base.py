@@ -62,6 +62,7 @@ THIRD_PARTY_APPS = [
     'hijack.contrib.admin',
     'post_office',
     'rest_framework',
+    'view_breadcrumbs',
     'widget_tweaks',
 ]
 
@@ -137,6 +138,7 @@ USE_TZ = True
 STATIC_URL = '/public/'
 STATIC_ROOT = BASE_DIR / 'public'
 STATICFILES_DIRS = [BASE_DIR / 'projeto' / 'assets']
+BREADCRUMBS_TEMPLATE = '_includes/breadcrumbs.html'
 
 MEDIA_URL = '/downloads/'
 MEDIA_ROOT = BASE_DIR / 'downloads'

@@ -1,0 +1,59 @@
+<nav class="navbar is-dark has-shadow canto-redondo">{% load static %}
+  <div class="navbar-brand">
+    <a class="navbar-item" href="{% url 'polare:home' %}">
+      <img src="{% static 'images/ifpa-logo.png' %}" style="max-height: 50px">
+    </a>
+
+    <a class="navbar-burger" onclick="document.querySelector('#navbar-links').classList.toggle('is-active')">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbar-links" class="navbar-menu">
+    <div class="navbar-end">
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link icon-text">
+          <span class="icon"><i class="fa-solid fa-chart-simple"></i></span>
+          <span>Relatórios</span>
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="{% url 'polare:quantitativo_geral' %}">
+            <div class="icon-text">
+              <span class="icon"><i class="fa-solid fa-chart-column"></i></span>
+              <span>Geral</span>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link icon-text">
+          <span class="icon"><i class="fa-solid fa-user"></i></span>
+          <span>{{ user.nome_completo }}</span>
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="/api/v1/">
+            <div class="icon-text">
+              <span class="icon"><i class="fa-solid fa-diagram-project"></i></span>
+              <span>API</span>
+            </div>
+          </a>
+          <a class="navbar-item" href="{% url 'admin:index' %}">
+            <div class="icon-text">
+              <span class="icon"><i class="fa-solid fa-gear"></i></span>
+              <span>Admin</span>
+            </div>
+          </a>
+          <hr class="navbar-divider">
+          <a class="navbar-item" href="{% url 'account_logout' %}" onclick="return confirm('Logout?')">
+            <div class="icon-text">
+              <span class="icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+              <span>Logout</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

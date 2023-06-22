@@ -2,92 +2,28 @@
 <html lang="pt-br">
 <head>
   {% block meta %}
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
   {% endblock meta %}
 
   <title>{% block title %}Bem vindo{% endblock title %}</title>
 
-  <link rel="shortcut icon" type="image/png" href="{% static 'images/python-logo.png' %}" />
-
-  <link rel="stylesheet" href="{% static 'app/libs/select2/css/select2.min.css' %}">
-
-  <link rel="stylesheet" href="{% static 'app/css/material/bootstrap-material.min.css' %}" id="bs-default-stylesheet">
-  <link rel="stylesheet" href="{% static 'app/css/material/app-material.min.css' %}" id="app-default-stylesheet">
-
-  <link rel="stylesheet" href="{% static 'app/css/icons.min.css' %}">
+  <link rel="shortcut icon" href="{% static 'images/ifpa-logo.png' %}"/>
+  <link rel="stylesheet" href="{% static 'libs/bulma-0.9.4/css/bulma.min.css' %}"/>
+  <link rel="stylesheet" href="{% static 'libs/select2-4.1.0.rc.0/css/select2.min.css' %}"/>
+  <link rel="stylesheet" href="{% static 'libs/font-awesome-6.4.0/css/all.min.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/app.css' %}"/>
 
   {% block styles %}{% endblock styles %}
 </head>
-<body class="{% block body_class %}loading{% endblock body_class %}">
-  {% block body %}
-  <div id="wrapper">
-    {% include '_includes/navegacao.html' %}
+<body class="{% block body_class %}{% endblock body_class %}">
+  {% block body %}{% endblock body %}
 
-    {% include '_includes/barra_esquerda.html' %}
-
-     <!-- ============================================================== -->
-    <!-- Start Page Content here -->
-    <!-- ============================================================== -->
-
-    <div class="content-page">
-      <div class="content">
-        <!-- Start Content-->
-        <div class="container-fluid">
-          <!-- start page title -->
-          <div class="row">
-            <div class="col-12">
-            {% block conteudo %}
-              <div class="page-title-box page-title-box-alt">
-                <h4 class="page-title">Starter</h4>
-                <div class="page-title-right">
-                  <ol class="breadcrumb m-0">
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">Minton</a></li>
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">Extra Pages</a></li>
-                    <li class="breadcrumb-item active">Starter</li>
-                  </ol>
-                </div>
-              </div>
-            {% endblock conteudo %}
-            </div>
-          </div>
-          <!-- end page title -->
-        </div> <!-- container -->
-      </div> <!-- content -->
-
-      <!-- Footer Start -->
-      <footer class="footer">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-6">
-              DTI - Diretoria de Tecnologia da Informação &copy; IFPA 2023
-            </div>
-            <div class="col-md-6">
-              <div class="text-md-end footer-links d-none d-sm-block">
-                <!--<a href="javascript:void(0);">About Us</a>
-                <a href="javascript:void(0);">Help</a>
-                <a href="javascript:void(0);">Contato</a>-->
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
-      <!-- end Footer -->
-
-    </div>
-
-    <!-- ============================================================== -->
-    <!-- End Page content -->
-    <!-- ============================================================== -->
-  </div>
-  {% endblock body %}
-
-  <script src="{% static 'app/js/vendor.min.js' %}"></script>
-  <script src="{% static 'app/libs/select2/js/select2.min.js' %}"></script>
-  <script src="{% static 'app/libs/select2/js/i18n/pt-BR.js' %}"></script>
-  <script src="{% static 'app/js/app.min.js' %}"></script>
-
+  <script src="{% static 'libs/jquery-3.7.0/js/jquery.min.js' %}"></script>
+  <script src="{% static 'libs/select2-4.1.0.rc.0/js/select2.full.min.js' %}"></script>
+  <script src="{% static 'libs/select2-4.1.0.rc.0/js/i18n/pt-BR.js' %}"></script>
+  <script src="{% static 'js/app.js' %}"></script>
   {% block scripts %}{% endblock scripts %}
 </body>
 </html>

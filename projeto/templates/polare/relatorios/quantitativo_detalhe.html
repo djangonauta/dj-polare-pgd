@@ -1,76 +1,89 @@
-{% extends 'base.html' %}{% load static %}
+{% extends 'app.html' %}{% load static %}
 
 {% block conteudo %}
-<div class="row mt-3">
-  <div class="col">
+<div class="columns">
+  <div class="column">
     <div class="card">
-      <div class="card-body">
-        <h4 class="header-title">Plano Individual ({{ plano.ano_referencia }}) - {{ plano.nome }} ({{ plano.siape }})</h4>
-        <table class="table table-bordered table-hover table-striped mt-3">
-          <tbody>
-            <tr>
-              <td>Código do Plano</td>
-              <td>{{ plano.pk }}</td>
-            </tr>
-            <tr>
-              <td>Matrícula</td>
-              <td>{{ plano.siape }}</td>
-            </tr>
-            <tr>
-              <td>CPF</td>
-              <td>{{ plano.cpf }}</td>
-            </tr>
-            <tr>
-              <td>Nome do Participante</td>
-              <td>{{ plano.nome }}</td>
-            </tr>
-            <tr>
-              <td>Unidade</td>
-              <td>{{ plano.unidade_localizacao.nome }} ({{ plano.unidade_localizacao.codigo }})</td>
-            </tr>
-            <tr>
-              <td>Modalidade de Execução</td>
-              <td>{{ plano.modelo_trabalho }}</td>
-            </tr>
-            <tr>
-              <td>Carga horária semanal</td>
-              <td>{{ plano.carga_horaria }} hora(s)</td>
-            </tr>
-            <tr>
-              <td>Início do plano</td>
-              <td>{{ plano.data_inicio|date:"d/m/Y" }}</td>
-            </tr>
-            <tr>
-              <td>Fim do plano</td>
-              <td>{{ plano.data_fim|date:"d/m/Y" }}</td>
-            </tr>
-            <tr>
-              <td>Carga horária total</td>
-              <td>{{ plano.carga_horaria_total }} hora(s)</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="card-header has-background-grey-dark">
+        <p class="card-header-title has-text-light">Plano Individual ({{ plano.ano_referencia }}) - {{ plano.nome }} ({{ plano.siape }})</p>
       </div>
-    </div>
 
-    <div class="card">
-      <div class="card-body">
-        <h4 class="header-title mb-3">Andamento das entregas</h4>
-        <div id="chart" class="flot-chart" style="height:500px"></div>
+      <div class="card-content">
+        <div class="content">
+          <table class="table is-bordered is-hovered">
+            <tbody>
+              <tr>
+                <td class="has-text-weight-bold">Código do Plano</td>
+                <td>{{ plano.pk }}</td>
+              </tr>
+              <tr>
+                <td class="has-text-weight-bold">Matrícula</td>
+                <td>{{ plano.siape }}</td>
+              </tr>
+              <tr>
+                <td class="has-text-weight-bold">CPF</td>
+                <td>{{ plano.cpf }}</td>
+              </tr>
+              <tr>
+                <td class="has-text-weight-bold">Nome do Participante</td>
+                <td>{{ plano.nome }}</td>
+              </tr>
+              <tr>
+                <td class="has-text-weight-bold">Unidade</td>
+                <td>{{ plano.unidade_localizacao.nome }} ({{ plano.unidade_localizacao.codigo }})</td>
+              </tr>
+              <tr>
+                <td class="has-text-weight-bold">Modalidade de Execução</td>
+                <td>{{ plano.modelo_trabalho }}</td>
+              </tr>
+              <tr>
+                <td class="has-text-weight-bold">Carga horária semanal</td>
+                <td>{{ plano.carga_horaria }} hora(s)</td>
+              </tr>
+              <tr>
+                <td class="has-text-weight-bold">Início do plano</td>
+                <td>{{ plano.data_inicio|date:"d/m/Y" }}</td>
+              </tr>
+              <tr>
+                <td class="has-text-weight-bold">Fim do plano</td>
+                <td>{{ plano.data_fim|date:"d/m/Y" }}</td>
+              </tr>
+              <tr>
+                <td class="has-text-weight-bold">Carga horária total</td>
+                <td>{{ plano.carga_horaria_total }} hora(s)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
+  </div>
+</div>
+
+<div class="columns">
+  <div class="column">
+    <div class="card">
+      <div class="card-header has-background-grey-dark">
+        <p class="card-header-title has-text-light">Andamento das entregas</p>
+      </div>
+
+      <div class="card-content">
+        <div id="chart" class="flot-chart" style="height: 700px"></div>
+      </div>
+    </div>
+  </div>
   </div>
 </div>
 {% endblock conteudo %}
 
 {% block scripts %}
   {{ block.super }}
-  <script src="{% static 'app/libs/flot-charts/jquery.flot.js' %}"></script>
-  <script src="{% static 'app/libs/flot-charts/jquery.flot.categories.js' %}"></script>
-  <script src="{% static 'app/libs/flot-charts/jquery.flot.canvas.js' %}"></script>
-  <script src="{% static 'app/libs/flot-charts/jquery.flot.stack.js' %}"></script>
-  <script src="{% static 'app/libs/flot-charts/jquery.flot.navigate.js' %}"></script>
-  <script src="{% static 'app/libs/jquery.flot.tooltip/js/jquery.flot.tooltip.min.js' %}"></script>
+  <script src="{% static 'libs/flot-charts/jquery.flot.js' %}"></script>
+  <script src="{% static 'libs/flot-charts/jquery.flot.categories.js' %}"></script>
+  <script src="{% static 'libs/flot-charts/jquery.flot.canvas.js' %}"></script>
+  <script src="{% static 'libs/flot-charts/jquery.flot.stack.js' %}"></script>
+  <script src="{% static 'libs/flot-charts/jquery.flot.navigate.js' %}"></script>
+  <script src="{% static 'libs/jquery.flot.tooltip/js/jquery.flot.tooltip.min.js' %}"></script>
   <script>
     $(function() {
       var plot = $.plot($("#chart"), [{
@@ -105,8 +118,8 @@
           show: true,
           content : 'Total de subtarefas: %y',
           shifts : {
-            x : -60,
-            y : 25
+            x : 15,
+            y : 5
           },
           defaultTheme : false
         },
@@ -114,14 +127,12 @@
           hoverable : true,
           clickable : true,
           borderColor : 'rgba(65, 80, 95, 0.07)',
-          tickColor : "transparent",
           borderWidth : 1,
-          labelMargin : 10,
-          backgroundColor : 'transparent'
+          labelMargin : 10
         },
         legend : {
           position: "ne",
-          margin : [0, -32],
+          margin : [0, -25],
           noColumns : 0,
           labelBoxBorderColor : null,
           labelFormatter : function(label, series) {
@@ -143,9 +154,6 @@
           mode: 'categories'
         }
       });
-
-      var ids = {{ ids|safe}};
-      console.log(plot.getAxes().xaxis)
     })
   </script>
 {% endblock scripts %}

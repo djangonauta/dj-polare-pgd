@@ -1,107 +1,86 @@
 {% extends 'base.html' %}{% load widget_tweaks static %}
-{% block body_class %}loading auth-fluid-pages pb-0{% endblock body_class %}
 {% block title %}Login{% endblock %}
 
 {% block body %}
-<div class="auth-fluid">
-  <!-- Auth fluid right content -->
-  <div class="auth-fluid-right bg-transparent">
-  </div>
-  <!-- end Auth fluid right content -->
-
-  <!--Auth fluid left content -->
-  <div class="auth-fluid-form-box">
-    <div class="align-items-center d-flex h-100">
-      <div class="card-body">
-
+<div class="section">
+  <div class="columns is-centered">
+    <div class="column is-one-third">
+      <form action="" method="post" novalidate>{% csrf_token %}
         {% if form.non_field_errors %}
-          <div class="alert alert-warning mb-3">
-            {{ form.non_field_errors.0 }}
+        <article class="message is-warning">
+          <div class="message-header">
+            <p>Erro</p>
+
+            <button type="button" class="delete" title="Clique para fechar essa mensagem"
+              onclick="this.parentElement.parentElement.style.display='none'"></button>
           </div>
+
+          <div class="message-body">{{ form.non_field_errors.0 }}</div>
+        </article>
         {% endif %}
 
-        <!-- title-->
-        <h4 class="mt-0">Login</h4>
-        <p class="text-muted mb-3">Entre com suas credenciais de acesso para fazer login no sistema.</p>
+        <div class="card">
+          <header class="card-header has-background-grey-dark">
+            <p class="card-header-title has-text-light">Login</p>
+          </header>
 
-        <!-- form -->
-        <form action="{% url 'account_login' %}" method="post">{% csrf_token %}
-          <div class="mb-2">
-            <label for="emailaddress" class="form-label">Nome de usuário ou email</label>
-            {% render_field form.login class="form-control" placeholder="Nome de usuário ou e-mail" %}
-          </div>
+          <div class="card-content">
+            <div class="content">
+              <div class="field">
+                <label for="{{ form.login.id_for_label }}" class="label">Login <span class="has-text-danger">*</span></label>
 
-          <div class="mb-2">
-            {% comment "" %}<a href="{% url 'account_reset_password' %}" class="text-muted float-end"><small>Esqueceu sua senha?</small></a>{% endcomment %}
-            <label for="password" class="form-label">Senha</label>
-            <div class="input-group input-group-merge">
-              {% render_field form.password class="form-control" placeholder="Senha" %}
-              <div class="input-group-text" data-password="false">
-                <span class="password-eye"></span>
+                <div class="control">
+                  {% render_field form.login class="input" placeholder="Nome de usuário ou e-mail" autofocus="autofocus" %}
+                  {% if form.login.errors %}<p class="help is-danger">{{ form.login.errors.0 }}</p>{% endif %}
+                </div>
+              </div>
+
+              <label for="{{ form.password.id_for_label }}" class="label">Senha <span class="has-text-danger">*</span></label>
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  {% render_field form.password class="input" placeholder="Senha" %}
+                  {% if form.password.errors %}<p class="help is-danger">{{ form.password.errors.0 }}</p>{% endif %}
+                </div>
+
+                <div class="control">
+                  <button id="password-eye" type="button" class="button" title="Clique para visualizar a senha">
+                    <span class="icon"><i class="fa-solid fa-eye"></i></span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="field is-grouped is-grouped-right">
+                <div class="control">
+                  <label class="checkbox ponteiro" for="{{ form.remember.id_for_label }}" title="Clique para permanecer logado mesmo fechando seu navegador">
+                    {% render_field form.remember %} Lembrar
+                  </label>
+                </div>
+              </div>
+
+              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value | default:'/' }}" />
+            </div>
+            <hr>
+
+            <div class="field is-grouped is-grouped-right">
+              <div class="control">
+                <button class="button is-primary" type="submit" onclick="this.classList.toggle('is-loading');submit()">
+                  <span class="icon"><i class="fa-solid fa-right-to-bracket"></i></span> <span>Entrar</span>
+                </button>
               </div>
             </div>
           </div>
-
-          <div class="mb-3">
-            <div class="form-check">
-              {% render_field form.remember class="form-check-input" %}
-              <label class="form-check-label" for="{{ form.remember.id_for_label }}">Lembrar</label>
-            </div>
-          </div>
-
-          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value | default:'/' }}" />
-
-          <div class="d-grid text-center">
-            <button id="logar" class="btn btn-primary" type="submit">
-              <i class="mdi mdi-login"></i> Login
-            </button>
-          </div>
-          {% comment "" %}
-          <!-- social-->
-          <div class="text-center mt-4">
-            <h5 class="mt-0 text-muted">Login utilizando suas redes sociais</h5>
-            <ul class="social-list list-inline mt-3 mb-0">
-              <li class="list-inline-item">
-                <a href="javascript: void(0);" class="social-list-item border-purple text-purple"><i
-                    class="mdi mdi-facebook"></i></a>
-              </li>
-              <li class="list-inline-item">
-                <a href="javascript: void(0);" class="social-list-item border-danger text-danger"><i
-                    class="mdi mdi-google"></i></a>
-              </li>
-              <li class="list-inline-item">
-                <a href="javascript: void(0);" class="social-list-item border-info text-info"><i
-                    class="mdi mdi-twitter"></i></a>
-              </li>
-              <li class="list-inline-item">
-                <a href="javascript: void(0);" class="social-list-item border-secondary text-secondary"><i
-                    class="mdi mdi-github"></i></a>
-              </li>
-            </ul>
-          </div>
-        </form>
-        <!-- end form-->
-
-        <!-- Footer-->
-        <footer class="footer footer-alt">
-          <p class="text-muted">Não tem uma conta?
-            <a href="{% url 'account_signup' %}" class="text-primary fw-medium ms-1">Registre-se</a>
-          </p>
-        </footer>{% endcomment %}
-
-      </div> <!-- end .card-body -->
-    </div> <!-- end .align-items-center.d-flex.h-100-->
+        </div>
+      </form>
+    </div>
   </div>
-  <!-- end auth-fluid-form-box-->
 </div>
 {% endblock body %}
 
 {% block scripts %}
+  {{ block.super }}
   <script>
-    $(function () {
-      setTimeout(function() {
-        $('#id_login').focus();
-      }, 1000);
+    addEventListener('load', function () {
+      App.configurarPasswordEye('#password-eye');
     });
   </script>
 {% endblock scripts %}

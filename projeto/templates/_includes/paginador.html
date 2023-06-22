@@ -1,44 +1,95 @@
 {% if is_paginated %}
-<nav>
-  <ul class="pagination justify-content-center">
+<nav class="pagination is-rounded is-centered">
+  <ul class="pagination-list">
     {% if page_obj.has_previous %}
-      <li class="page-item">
-        <a class="page-link" href="?{{ view.page_kwarg }}=1"><i class="fe-chevrons-left"></i></a>
+      <li>
+        <a class="pagination-link" href="?{{ view.page_kwarg }}=1{% if filter.query_params %}&{{ filter.query_params }}{% endif %}">
+          <span class="icon-text">
+            <span class="icon">
+              <i class="fa-solid fa-circle-chevron-left"></i>
+            </span>
+          </span>
+        </a>
       </li>
-      <li class="page-item">
-        <a class="page-link" href="?{{ view.page_kwarg }}={{ page_obj.previous_page_number }}{% if filter.query_params %}&{{ filter.query_params }}{% endif %}">
-          <i class="fe-chevron-left"></i>
+      <li>
+        <a class="pagination-link" href="?{{ view.page_kwarg }}={{ page_obj.previous_page_number }}{% if filter.query_params %}&{{ filter.query_params }}{% endif %}">
+          <span class="icon-text">
+            <span class="icon">
+              <i class="fa-solid fa-chevron-left"></i>
+            </span>
+          </span>
         </a>
       </li>
     {% else %}
-      <li class="page-item disabled"><a class="page-link"><i class="fe-chevrons-left"></i></a></li>
-      <li class="page-item disabled"><a class="page-link"><i class="fe-chevron-left"></i></a></li>
+      <li>
+        <a class="pagination-link" disabled>
+          <span class="icon-text">
+            <span class="icon">
+              <i class="fa-solid fa-circle-chevron-left"></i>
+            </span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a class="pagination-link" disabled>
+          <span class="icon-text">
+            <span class="icon">
+              <i class="fa-solid fa-chevron-left"></i>
+            </span>
+          </span>
+        </a>
+      </li>
     {% endif %}
+
     {% for i in page_obj.adjusted_elided_pages %}
       {% if page_obj.number == i %}
-        <li class="page-item active"><a class="page-link"><span>{{ i }}</span></a></li>
+        <li><a class="pagination-link is-current"><span>{{ i }}</span></a></li>
       {% else %}
         {% if i == page_obj.paginator.ELLIPSIS %}
-          <li class="page-item"><span class="page-link">{{ i }}</span></li>
+          <li><span class="pagination-ellipsis">&hellip;</span></li>
         {% else %}
-          <li class="page-item"><a class="page-link" href="?{{ view.page_kwarg }}={{ i }}{% if filter.query_params %}&{{ filter.query_params }}{% endif %}">{{ i }}</a></li>
+          <li><a class="pagination-link" href="?{{ view.page_kwarg }}={{ i }}{% if filter.query_params %}&{{ filter.query_params }}{% endif %}">{{ i }}</a></li>
         {% endif %}
       {% endif %}
     {% endfor %}
     {% if page_obj.has_next %}
-      <li class="page-item">
-        <a class="page-link" href="?{{ view.page_kwarg }}={{ page_obj.next_page_number }}{% if filter.query_params %}&{{ filter.query_params }}{% endif %}">
-          <i class="fe-chevron-right"></i>
+      <li>
+        <a class="pagination-link" href="?{{ view.page_kwarg }}={{ page_obj.next_page_number }}{% if filter.query_params %}&{{ filter.query_params }}{% endif %}">
+          <span class="icon-text">
+            <span class="icon">
+              <i class="fa-solid fa-chevron-right"></i>
+            </span>
+          </span>
         </a>
       </li>
-      <li class="page-item">
-        <a class="page-link" href="?{{ view.page_kwarg }}={{ page_obj.paginator.num_pages }}">
-          <i class="fe-chevrons-right"></i>
+      <li>
+        <a class="pagination-link" href="?{{ view.page_kwarg }}={{ page_obj.paginator.num_pages }}{% if filter.query_params %}&{{ filter.query_params }}{% endif %}">
+          <span class="icon-text">
+            <span class="icon">
+              <i class="fa-solid fa-circle-chevron-right"></i>
+            </span>
+          </span>
         </a>
       </li>
     {% else %}
-      <li class="page-item disabled"><a class="page-link"><i class="fe-chevron-right"></i></a></li>
-      <li class="page-item disabled"><a class="page-link"><i class="fe-chevrons-right"></i></a></li>
+      <li>
+        <a class="pagination-link" disabled>
+          <span class="icon-text">
+            <span class="icon">
+              <i class="fa-solid fa-chevron-right"></i>
+            </span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a class="pagination-link" disabled>
+          <span class="icon-text">
+            <span class="icon">
+              <i class="fa-solid fa-circle-chevron-right"></i>
+            </span>
+          </span>
+        </a>
+      </li>
     {% endif %}
   </ul>
 </nav>

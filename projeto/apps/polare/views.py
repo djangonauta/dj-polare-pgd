@@ -1,6 +1,9 @@
 import django_filters
+import view_breadcrumbs
+from django import urls
 from django.contrib.auth import mixins
 from django.db.models import Count
+from django.utils import functional
 from django.views import generic
 
 from projeto.apps.arquitetura.filters import QueryParamFilterSet
@@ -10,7 +13,7 @@ from projeto.apps.polare.models import Entrega, PlanoIndividual, Subtarefa
 from . import models
 
 
-class HomeView(mixins.LoginRequiredMixin, generic.TemplateView):
+class HomeView(mixins.LoginRequiredMixin, view_breadcrumbs.BaseBreadcrumbMixin, generic.TemplateView):
 
     template_name = 'polare/home.html'
 
@@ -36,6 +39,10 @@ class HomeView(mixins.LoginRequiredMixin, generic.TemplateView):
         ).distinct().count()
         return ctx
 
+    @functional.cached_property
+    def crumbs(self):
+        return [('Home', urls.reverse('polare:home'))]
+
 
 home = HomeView.as_view()
 
@@ -50,7 +57,7 @@ class PlanoIndividualFilter(QueryParamFilterSet):
         fields = ['nome', 'siape']
 
 
-class QuantitativoGeral(ElidedListView):
+class QuantitativoGeral(view_breadcrumbs.ListBreadcrumbMixin, ElidedListView):
 
     template_name = 'polare/relatorios/quantitativo_geral.html'
     model = models.PlanoIndividual
@@ -61,11 +68,15 @@ class QuantitativoGeral(ElidedListView):
     ordering = ['nome', 'ano_referencia']
     filter_class = PlanoIndividualFilter
 
+    @functional.cached_property
+    def crumbs(self):
+        return [('Quantitativo Geral', urls.reverse('polare:quantitativo_geral'))]
+
 
 quantitativo_geral = QuantitativoGeral.as_view()
 
 
-class QuantitativoDetalhe(generic.DetailView):
+class QuantitativoDetalhe(view_breadcrumbs.DetailBreadcrumbMixin, generic.DetailView):
 
     template_name = 'polare/relatorios/quantitativo_detalhe.html'
     model = models.PlanoIndividual
@@ -86,8 +97,12 @@ class QuantitativoDetalhe(generic.DetailView):
             data.append([f'{len(v)} entrega(s)\n{k}', sum(v)])
 
         ctx['data'] = data
-        ctx['ids'] = ids
         return ctx
+
+    @functional.cached_property
+    def crumbs(self):
+        pk = self.kwargs['pk']
+        return [('Quantitativo Detalhe', urls.reverse('polare:quantitativo_detalhe', args=[pk]))]
 
 
 quantitativo_detalhe = QuantitativoDetalhe.as_view()

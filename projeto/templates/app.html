@@ -1,0 +1,17 @@
+{% extends 'base.html' %}{% load view_breadcrumbs widget_tweaks %}
+
+{% block body %}
+<div class="section pt-2">
+  <div class="container">
+    <div class="columns">
+      <div class="column">{% include '_includes/navbar.html' %}</div>
+    </div>
+
+    <div class="columns">
+      <div class="column">{% block breadcrumbs %}{% render_breadcrumbs %}{% endblock %}</div>
+    </div>
+
+    {% block conteudo %}{% endblock conteudo %}
+  </div>
+</div>
+{% endblock body %}

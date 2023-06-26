@@ -1,19 +1,18 @@
 import django_filters
-import view_breadcrumbs
 from django import urls
-from django.contrib.auth import mixins
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
 from django.utils import functional
-from django.views import generic
+from django.views.generic import DetailView, TemplateView
+from view_breadcrumbs import BaseBreadcrumbMixin, DetailBreadcrumbMixin, ListBreadcrumbMixin
 
 from projeto.apps.arquitetura.filters import QueryParamFilterSet
 from projeto.apps.arquitetura.views import ElidedListView
-from projeto.apps.polare.models import Entrega, PlanoIndividual, Subtarefa
 
-from . import models
+from .models import Entrega, PlanoIndividual, Subtarefa
 
 
-class HomeView(mixins.LoginRequiredMixin, view_breadcrumbs.BaseBreadcrumbMixin, generic.TemplateView):
+class HomeView(LoginRequiredMixin, BaseBreadcrumbMixin, TemplateView):
 
     template_name = 'polare/home.html'
 
@@ -53,15 +52,15 @@ class PlanoIndividualFilter(QueryParamFilterSet):
     siape = django_filters.CharFilter(lookup_expr='exact')
 
     class Meta:
-        model = models.PlanoIndividual
+        model = PlanoIndividual
         fields = ['nome', 'siape']
 
 
-class QuantitativoGeral(view_breadcrumbs.ListBreadcrumbMixin, ElidedListView):
+class QuantitativoGeral(LoginRequiredMixin, ListBreadcrumbMixin, ElidedListView):
 
     template_name = 'polare/relatorios/quantitativo_geral.html'
-    model = models.PlanoIndividual
-    queryset = models.PlanoIndividual.objects.planos_para_api()
+    model = PlanoIndividual
+    queryset = PlanoIndividual.objects.planos_para_api()
     context_object_name = 'planos'
     paginate_by = 5
     page_kwarg = 'pagina'
@@ -76,42 +75,42 @@ class QuantitativoGeral(view_breadcrumbs.ListBreadcrumbMixin, ElidedListView):
 quantitativo_geral = QuantitativoGeral.as_view()
 
 
-class QuantitativoDetalhe(view_breadcrumbs.DetailBreadcrumbMixin, generic.DetailView):
+class QuantitativoDetalhe(LoginRequiredMixin, DetailBreadcrumbMixin, DetailView):
 
     template_name = 'polare/relatorios/quantitativo_detalhe.html'
-    model = models.PlanoIndividual
+    model = PlanoIndividual
     context_object_name = 'plano'
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         queryset = PlanoIndividual.objects.get(pk=self.kwargs['pk']).entregas.prefetch_related('subtarefas')
         queryset = queryset.annotate(totalsub=Count('subtarefas'))
-        dados = {}
-        ids = []
-        for p in queryset:
-            dados.setdefault(p.intervalo, []).append(p.totalsub)
-            ids.append(p.pk)
+        dados: dict[str, list] = {}
+        for entrega in queryset:
+            dados.setdefault(entrega.intervalo, []).append(entrega.totalsub)
 
         data = []
-        for k, v in dados.items():
-            data.append([f'{len(v)} entrega(s)\n{k}', sum(v)])
+        for intervalo, lista_totalsub in dados.items():
+            data.append([f'{len(lista_totalsub)} entrega(s)\n{intervalo}', sum(lista_totalsub)])
 
         ctx['data'] = data
         return ctx
 
     @functional.cached_property
     def crumbs(self):
-        pk = self.kwargs['pk']
-        return [('Quantitativo Detalhe', urls.reverse('polare:quantitativo_detalhe', args=[pk]))]
+        return [
+            ('Quantitativo Geral', urls.reverse('polare:quantitativo_geral')),
+            ('Quantitativo Detalhe', urls.reverse('polare:quantitativo_detalhe', args=[self.kwargs['pk']])),
+        ]
 
 
 quantitativo_detalhe = QuantitativoDetalhe.as_view()
 
 
-class EntregaDetalhe(generic.DetailView):
+class EntregaDetalhe(DetailView):
 
     template_name = 'polare/entregas/entrega_detalhe.html'
-    model = models.Entrega
+    model = Entrega
     context_object_name = 'entrega'
 
 

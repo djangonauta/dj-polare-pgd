@@ -3,4 +3,4 @@ class CredencialPGDInvalida(Exception):
 
 
 class EntidadeNaoProcessada(Exception):
-    """Ocorre quando o formato json dos dados enviados é inválido"""
+    """Ocorre quando o formato json dos dados enviados é inválido."""

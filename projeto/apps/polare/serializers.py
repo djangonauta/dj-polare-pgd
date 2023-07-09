@@ -17,6 +17,23 @@ class EntregaSerializer(serializers.ModelSerializer):
                   'tempo_teletrabalho_programado']
 
 
+class UnidadeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Unidade
+        fields = ['id', 'ativo', 'versao', 'codigo', 'hierarquia_organizacional', 'nome', 'sigla']
+
+
+class PlanoGerencialUnidadeSerializer(serializers.ModelSerializer):
+
+    id_unidade_localizacao = UnidadeSerializer()
+
+    class Meta:
+        model = models.PlanoGerencialUnidade
+        fields = ['id', 'ativo', 'versao', 'ano_referencia', 'siape_responsavel', 'id_unidade_localizacao',
+                  'status']
+
+
 class PlanoIndividualSerializer(serializers.ModelSerializer):
 
     cod_plano = serializers.IntegerField(source='id')
@@ -29,6 +46,7 @@ class PlanoIndividualSerializer(serializers.ModelSerializer):
     carga_horaria_semanal = serializers.IntegerField(source='carga_horaria')
     carga_horaria_total = serializers.IntegerField()
     horas_homologadas = serializers.IntegerField(source='carga_horaria')
+    plano_gerencial_unidade = PlanoGerencialUnidadeSerializer()
 
     atividades = EntregaSerializer(source='entregas', many=True)
 
@@ -37,7 +55,7 @@ class PlanoIndividualSerializer(serializers.ModelSerializer):
         fields = ['cod_plano', 'matricula_siape', 'cpf', 'nome_participante',
                   'cod_unidade_exercicio', 'nome_unidade_exercicio', 'modalidade_execucao',
                   'carga_horaria_semanal', 'data_inicio', 'data_fim', 'carga_horaria_total',
-                  'horas_homologadas', 'atividades']
+                  'horas_homologadas', 'plano_gerencial_unidade', 'atividades']
 
     def to_representation(self, instance):
         if instance.carga_horaria > 40:

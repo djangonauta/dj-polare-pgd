@@ -70,7 +70,7 @@ class ClientePGD:
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
-        arquivo_log = f'{datetime.datetime.now().isoformat(timespec="seconds")}.log'
+        arquivo_log = f'enviar-dados-{datetime.datetime.now().isoformat(timespec="seconds")}.log'
 
         parser.add_argument('--level', default='info')
         parser.add_argument('--arquivo-log', default=arquivo_log, dest='arquivo_log')

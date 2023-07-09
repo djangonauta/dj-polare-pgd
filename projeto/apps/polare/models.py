@@ -25,6 +25,42 @@ class Unidade(models.Model):
         return f'{self.nome} ({self.codigo})'
 
 
+class Edital(models.Model):
+    id = models.BigIntegerField(primary_key=True)
+    ativo = models.BooleanField()
+    versao = models.BigIntegerField()
+    data_fim = models.DateTimeField()
+    data_fim_inscricao = models.DateTimeField(blank=True, null=True)
+    data_inicio = models.DateTimeField()
+    data_inicio_inscricao = models.DateTimeField(blank=True, null=True)
+    id_arquivo = models.BigIntegerField(blank=True, null=True)
+    link_edital = models.CharField(max_length=255, blank=True, null=True)
+    numero = models.BigIntegerField()
+    resumo = models.TextField()
+    titulo = models.CharField(max_length=255)
+    vagas = models.BigIntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'polare\".\"edital'
+
+
+class PlanoGerencialUnidade(models.Model):
+    id = models.BigIntegerField(primary_key=True)
+    ativo = models.BooleanField()
+    versao = models.BigIntegerField()
+    ano_referencia = models.BigIntegerField()
+    atribuicoes = models.TextField()  # This field type is a guess.
+    siape_responsavel = models.CharField(max_length=255)
+    id_unidade_localizacao = models.ForeignKey('Unidade', models.DO_NOTHING, db_column='id_unidade_localizacao')  # noqa: E501
+    status = models.CharField(max_length=255)
+    edital = models.ForeignKey(Edital, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'polare\".\"plano_gerencial_unidade'
+
+
 class PlanoIndividual(models.Model):
 
     id = models.BigIntegerField(primary_key=True)
@@ -51,6 +87,13 @@ class PlanoIndividual(models.Model):
         Unidade,
         on_delete=models.DO_NOTHING,
         db_column='id_unidade_lotacao'
+    )
+    plano_gerencial_unidade = models.ForeignKey(
+        PlanoGerencialUnidade,
+        models.DO_NOTHING,
+        blank=True,
+        null=True,
+        db_column='id_plano_gerencial_unidade',
     )
 
     objects = managers.PlanoIndividualManager()

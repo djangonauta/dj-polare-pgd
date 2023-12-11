@@ -56,8 +56,7 @@ class ClientePGD:
             if 'access_token' not in conteudo:
                 raise exceptions.CredencialPGDInvalida('Credenciais (login e/ou senha) inválidas.')
 
-            headers = dict(Authorization=f'Bearer {conteudo["access_token"]}')
-            return headers
+            return dict(Authorization=f'Bearer {conteudo["access_token"]}')
 
     @sync_to_async
     def serializar(self, plano):

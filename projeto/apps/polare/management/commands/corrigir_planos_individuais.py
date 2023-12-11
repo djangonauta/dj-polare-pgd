@@ -1,8 +1,9 @@
-from django.core.management.base import BaseCommand
-from ... import models
-import logging
 import datetime
+import logging
 
+from django.core.management.base import BaseCommand
+
+from ... import models
 
 logger = logging.getLogger(__name__)
 

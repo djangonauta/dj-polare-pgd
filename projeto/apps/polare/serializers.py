@@ -62,8 +62,8 @@ class PlanoIndividualSerializer(serializers.ModelSerializer):
             instance.carga_horaria = 40
 
         instance.cpf = instance.cpf.zfill(11)
-        instance.data_inicio = instance.data_inicio or '2022-12-12'
-        instance.data_fim = instance.data_fim or '2022-12-31'
+        instance.data_inicio = instance.data_inicio or '2022-12-12' if instance.ano_referencia == 2022 else '2023-01-01'  # noqa: E501
+        instance.data_fim = instance.data_fim or '2022-12-31' if instance.ano_referencia == 2022 else '2023-12-12'  # noqa: E501
         return super().to_representation(instance)
 
 
@@ -87,4 +87,8 @@ class EntregaPROGEPSerializer(EntregaSerializer):
 
 class PlanoIndividualPROGEPSerializer(PlanoIndividualSerializer):
 
+    ano_referencia = serializers.IntegerField()
     atividades = EntregaPROGEPSerializer(source='entregas', many=True)
+
+    class Meta(PlanoIndividualSerializer.Meta):
+        fields = ['ano_referencia'] + PlanoIndividualSerializer.Meta.fields

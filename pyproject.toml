@@ -1,9 +1,13 @@
-[[source]]
-url = "https://pypi.org/simple"
-verify_ssl = true
-name = "pypi"
+[tool.poetry]
+name = "dj-polare-pgd"
+version = "0.1.0"
+description = ""
+authors = ["Igor Carvalho"]
+license = "MIT"
+readme = "README.md"
 
-[packages]
+[tool.poetry.dependencies]
+python = "^3.12"
 Django = "*"
 Pillow = "*"
 WeasyPrint = "*"
@@ -38,7 +42,10 @@ pygraphviz = "*"
 redis = "*"
 whitenoise = "*"
 
-[dev-packages]
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
 autopep8 = "*"
 bpython = "*"
 coverage = "*"
@@ -52,5 +59,6 @@ pyopenssl = "*"
 selenium = "*"
 werkzeug = "*"
 
-[requires]
-python_version = "3.11"
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

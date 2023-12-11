@@ -85,6 +85,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'hijack.middleware.HijackUserMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 SITE_ID = 1

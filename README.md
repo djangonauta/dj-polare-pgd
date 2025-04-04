@@ -37,40 +37,12 @@ Utilizado em conjunto com whitenoise para servir arquivos estáticos.
 ./manage.py runserver_plus --cert-file cert.crt --settings projeto.settings.whitenoise 0.0.0.0:8000
 ```
 
-RabbitMQ
-========
+Credenciais
+===========
 
-Remover usuário guest:
+Código SIORG do IFPA: 100917
+Sistema utilizado: Polare - https://polare.ifpa.edu.br
 
-```bash
-sudo rabbitmqctl delete_user guest
-```
-
-Adicionar VHOST do projeto:
-
-```bash
-sudo rabbitmqctl delete_vhost /
-sudo rabbitmqctl add_vhost projeto
-```
-
-Adicionar usuário:
-
-```bash
-sudo rabbitmqctl add_user usuario senha
-```
-
-Atribuir permissões:
-
-```bash
-sudo rabbitmqctl set_permissions -p projeto usuario ".*" ".*" ".*"
-```
-
-Ativar inteface web localhost:15672
-
-```bash
-sudo rabbitmq-plugins enable rabbitmq_management # ativar o plugin
-sudo rabbitmqctl set_user_tags usuario administrator # adicionar permissão ao usuário
-```
 
 Problemas Identificados
 =======================

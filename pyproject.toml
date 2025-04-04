@@ -41,6 +41,7 @@ pyinvoke = "*"
 pygraphviz = "*"
 redis = "*"
 whitenoise = "*"
+rich = "^14.0.0"
 
 [tool.poetry.group.dev]
 optional = true

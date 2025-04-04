@@ -149,8 +149,8 @@ LOGIN_URL = urls.reverse_lazy('account_login')
 LOGIN_REDIRECT_URL = urls.reverse_lazy('polare:home')
 
 # https://django-allauth.readthedocs.io/en/latest/
-ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
-ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_METHODS = {'username', 'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = env('ACCOUNT_EMAIL_VERIFICATION', default='none')  # 'mandatory'
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
@@ -215,9 +215,9 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # PGD https://api-programadegestao.economia.gov.br/docs
-API_PGD_LOGIN_URL = env('API_PGD_LOGIN_URL')
-API_PGD_PLANO_TRABALHO_URL = env('API_PGD_PLANO_TRABALHO_URL')
+API_PGD_URL = env('API_PGD_URL')
 API_PGD_CREDENCIAIS = env.dict('API_PGD_CREDENCIAIS')
+API_PGD_CODIGO_DA_UNIDADE_AUTORIZADORA = env('API_PGD_CODIGO_DA_UNIDADE_AUTORIZADORA')
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -269,5 +269,10 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
+        'projeto.apps': {
+            'handlers': ['django.server'],
+            'level': 'INFO',
+            'propagate': False,
+        }
     }
 }

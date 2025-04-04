@@ -1,6 +1,7 @@
-from datetime import datetime
+import datetime
 
 import arrow
+from django.conf import settings
 from django.db import models
 
 from . import managers
@@ -119,6 +120,29 @@ class PlanoIndividual(models.Model):
 
         num_semanas = sum(1 for _ in arrow.Arrow.span_range('week', inicio, fim)) - 1
         return num_semanas * self.carga_horaria
+
+    @property
+    def cpf_fill(self):
+        return self.cpf.zfill(11)
+
+    @property
+    def siape_fill(self):
+        return self.siape.zfill(7)
+
+    @property
+    def participante(self):
+        """Extração dos dados do participante a partir do Plano Individual."""
+        return {
+            'origem_unidade': 'SIAPE',
+            'cod_unidade_autorizadora': settings.API_PGD_CODIGO_DA_UNIDADE_AUTORIZADORA,
+            'cod_unidade_lotacao': self.unidade_localizacao.codigo,
+            'matricula_siape': self.siape_fill,
+            'cod_unidade_instituidora': settings.API_PGD_CODIGO_DA_UNIDADE_AUTORIZADORA,
+            'cpf': self.cpf_fill,
+            'situacao': int(self.ativo),
+            'modalidade_execucao': self.modelo_trabalho_numero,
+            'data_assinatura_tcr': datetime.date.today().isoformat(),
+        }
 
 
 class HorarioTrabalho(models.Model):

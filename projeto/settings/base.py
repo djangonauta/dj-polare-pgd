@@ -149,8 +149,8 @@ LOGIN_URL = urls.reverse_lazy('account_login')
 LOGIN_REDIRECT_URL = urls.reverse_lazy('polare:home')
 
 # https://django-allauth.readthedocs.io/en/latest/
-ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
-ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_METHODS = {'username', 'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = env('ACCOUNT_EMAIL_VERIFICATION', default='none')  # 'mandatory'
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True

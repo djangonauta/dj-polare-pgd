@@ -35,9 +35,11 @@ class ClientePGD:
             async for plano in planos:
                 url = f'{settings.API_PGD_PLANO_TRABALHO_URL}/{plano.id}'
                 json = await self.serializar(plano)
+                logger.info(f'Enviando dados do plano de trabalho {plano.id}')
                 async with session.put(url, json=json, headers=headers) as response:
                     if response.status == 200:
                         self.total_registros += 1
+                        logger.info(f'Plano de trabalho {plano.id} enviado com sucesso.')
                         continue
 
                     conteudo = await response.json()

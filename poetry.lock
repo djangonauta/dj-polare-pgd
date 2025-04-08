@@ -2759,17 +2759,6 @@ files = [
 windows-terminal = ["colorama (>=0.4.6)"]
 
 [[package]]
-name = "pygraphviz"
-version = "1.14"
-description = "Python interface to Graphviz"
-optional = false
-python-versions = ">=3.10"
-groups = ["main"]
-files = [
-    {file = "pygraphviz-1.14.tar.gz", hash = "sha256:c10df02377f4e39b00ae17c862f4ee7e5767317f1c6b2dfd04cea6acc7fc2bea"},
-]
-
-[[package]]
 name = "pyinvoke"
 version = "1.0.4"
 description = ""
@@ -3587,4 +3576,4 @@ test = ["pytest"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "ebb9eef37422cf357fad283a81b99399973bcdd29d856237530cafd6c4cdbca9"
+content-hash = "85ae28aa8b8667446b34af1fe2894bcc6e7a074981bb940d3b23e572d322f7d8"
